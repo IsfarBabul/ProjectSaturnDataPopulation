@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
@@ -57,21 +58,39 @@ public class Main {
 
         //Populate course offering table
 
-            //I'm assuming 50 courses but this can be different.
+        //I'm assuming 50 courses but this can be different.
 
         int course_offering_id = 0;
         String[] room_wings = {"N", "E", "S", "W"};
-        int room_wing_index = 0;
-        int floor_number = 0;
-        int room_number = 1;
+        String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
+        ArrayList<String> allRoomNumbers = new ArrayList<>();
+        for (String floor_number : floor_numbers) {
+            for (String room_wing : room_wings) {
+                for (int i = 1; i <= 20; i++) {
+                    String zeroPad = "";
+                    if (i < 10) {
+                        zeroPad = "0";
+                    }
+                    allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
+                }
+            }
+        }
+        int room_index = 0;
 
         for (int i = 0; i < 50; i++) {
             int num_of_course_offerings = (int) (Math.random() * 5) + 1;
             for (int j = 0; j < num_of_course_offerings; j++) {
-                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + " )"); //TODO: MORE VALUES LEFT
+                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + " )"); //TODO: MORE VALUES LEFT
+                room_index++;
                 course_offering_id++;
             }
         }
+
+        //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
+        //ASSIGN A PERIOD TO A COURSE OFFERING
+        //REMOVE COURSE OFFERING LATER
+
+        //THEN A STUDENT COULD POPULATE
 
 
 
@@ -82,7 +101,7 @@ public class Main {
 
         //Populate roster table
 
-            //I assume 150 course offerings for now.
+        //I assume 150 course offerings for now.
 
         for (int i = 0; i < 150; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
@@ -95,6 +114,7 @@ public class Main {
                 System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
+        System.out.println(allRoomNumbers);
 
     }
 }
