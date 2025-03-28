@@ -9,6 +9,15 @@ public class Main {
             System.out.println("INSERT INTO Teachers ( teacher_id, name, department_id ) VALUES ( " + i + ", 'Teacher" + i + "', " + i + " );");
         }
 
+        //Populate teacher schedule table
+
+        for (int i = 0; i < 200; i++) {    //200 teachers
+            for (int j = 1; j <= 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            }
+        }
+
+
         //Populate students table
         for (int i = 1; i <= 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
@@ -28,7 +37,7 @@ public class Main {
             assignmentCount++;
         }
 
-        
+
 
         //Populate assignments grade table
         /*for (int i = 1; i <= 5000; i++) { //each student gets assignments
@@ -41,7 +50,51 @@ public class Main {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
 
+        //Populate courses table
 
+
+
+
+        //Populate course offering table
+
+            //I'm assuming 50 courses but this can be different.
+
+        int course_offering_id = 0;
+        String[] room_wings = {"N", "E", "S", "W"};
+        int room_wing_index = 0;
+        int floor_number = 0;
+        int room_number = 1;
+
+        for (int i = 0; i < 50; i++) {
+            int num_of_course_offerings = (int) (Math.random() * 5) + 1;
+            for (int j = 0; j < num_of_course_offerings; j++) {
+                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + " )"); //TODO: MORE VALUES LEFT
+                course_offering_id++;
+            }
+        }
+
+
+
+        //Populate course type table
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+
+        //Populate roster table
+
+            //I assume 150 course offerings for now.
+
+        for (int i = 0; i < 150; i++) {
+            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
+        }
+
+        //Populate student schedule table
+
+        for (int i = 0; i < 5000; i++) {    //5000 students
+            for (int j = 1; j <= 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            }
+        }
 
     }
 }
