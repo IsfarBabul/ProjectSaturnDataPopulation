@@ -5,10 +5,24 @@ public class Main {
     public static void main(String[] args) {
 
         //Populate teachers table
-        for (int i = 1; i <= 200; i++) {
-            //TODO: FILL THIS WITH REAL TEACHERS AND THEIR DEPARTMENTS
-            System.out.println("INSERT INTO Teachers ( teacher_id, name, department_id ) VALUES ( " + i + ", 'Teacher" + i + "', " + i + " );");
+        public static void generateTeachers(ArrayList<String> fileData) {
+        String[] teacherNames = fileData.get(0).split(",");
+        String[] departmentNames = fileData.get(1).split(",");
+
+
+        for (int i = 0; i < teacherNames.length; i++) {
+            String[] teacherSplit = teacherNames[i].trim().split(" ");
+            String teacherFirstName = teacherSplit[0];
+            String teacherLastName = teacherSplit[teacherSplit.length - 1];
+            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
+
+
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('"
+                    + i +"', '"
+                    + teacherFirstName + " " + teacherLastName + "', '"
+                    + departmentId + "');");
         }
+    }
 
         //Populate teacher schedule table
 
