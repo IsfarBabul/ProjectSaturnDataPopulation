@@ -4,25 +4,9 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
 
-        //Populate teachers table
-        public static void generateTeachers(ArrayList<String> fileData) {
-        String[] teacherNames = fileData.get(0).split(",");
-        String[] departmentNames = fileData.get(1).split(",");
 
 
-        for (int i = 0; i < teacherNames.length; i++) {
-            String[] teacherSplit = teacherNames[i].trim().split(" ");
-            String teacherFirstName = teacherSplit[0];
-            String teacherLastName = teacherSplit[teacherSplit.length - 1];
-            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
 
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('"
-                    + i +"', '"
-                    + teacherFirstName + " " + teacherLastName + "', '"
-                    + departmentId + "');");
-        }
-    }
 
         //Populate teacher schedule table
 
@@ -130,5 +114,33 @@ public class Main {
         }
         System.out.println(allRoomNumbers);
 
+        //Populate department_id table
+        String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
+
+        for (int i = 0; i < departments.length; i++) {
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
+        }
+
     }
+
+    //Populate teachers table
+    public static void generateTeachers(ArrayList<String> fileData) {
+        String[] teacherNames = fileData.get(0).split(",");
+        String[] departmentNames = fileData.get(1).split(",");
+
+
+        for (int i = 0; i < teacherNames.length; i++) {
+            String[] teacherSplit = teacherNames[i].trim().split(" ");
+            String teacherFirstName = teacherSplit[0];
+            String teacherLastName = teacherSplit[teacherSplit.length - 1];
+            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
+
+
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('"
+                    + i + "', '"
+                    + teacherFirstName + " " + teacherLastName + "', '"
+                    + departmentId + "');");
+        }
+    }
+
 }
