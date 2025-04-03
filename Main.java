@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 
 public class Main {
-    private Teacher[] teachers = new Teacher[200];
-    private Student[] students = new Student[5000];
+    private static Teacher[] teachers = new Teacher[200];
+    private static Student[] students = new Student[5000];
+    private static String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
     public static void main(String[] args) {
-        //Populate teacher schedule table
+        // Create Teachers
+        for (int i = 0; i < 200; i++) {
+            teachers[i] = new Teacher();
+        }
+
+        // Populate teacher schedule table
         for (int i = 0; i < 200; i++) {    //200 teachers
             for (int j = 1; j <= 10; j++) {   //each have 10 courses
                 System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
@@ -110,7 +116,6 @@ public class Main {
         }
 
         //Populate department_id table
-        String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
