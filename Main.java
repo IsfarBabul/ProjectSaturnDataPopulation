@@ -3,13 +3,7 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-
-
-
-
-
         //Populate teacher schedule table
-
         for (int i = 0; i < 200; i++) {    //200 teachers
             for (int j = 1; j <= 10; j++) {   //each have 10 courses
                 System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
@@ -112,7 +106,6 @@ public class Main {
                 System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
-        System.out.println(allRoomNumbers);
 
         //Populate department_id table
         String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
