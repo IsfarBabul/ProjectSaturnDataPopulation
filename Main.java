@@ -1,7 +1,9 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
+    private Teacher[] teachers = new Teacher[200];
+    private Student[] students = new Student[5000];
+
     public static void main(String[] args) {
         //Populate teacher schedule table
         for (int i = 0; i < 200; i++) {    //200 teachers
