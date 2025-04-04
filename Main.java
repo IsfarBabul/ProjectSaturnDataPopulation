@@ -41,11 +41,11 @@ public class Main {
 
 
         //Populate assignments grade table
-        /*for (int i = 1; i <= 5000; i++) { //each student gets assignments
+        /* for (int i = 1; i <= 5000; i++) { //each student gets assignments
             for (int j = 0; j < 15; j++) {     //number of assignments
                 System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
             }
-        }*/
+        } */
 
         //Populate assignment type table (may not be needed)
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
@@ -107,40 +107,41 @@ public class Main {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
 
-        //Populate student schedule table
+        populateStudentSchedules();
 
-        for (int i = 0; i < 5000; i++) {    //5000 students
+        populateDepartments();
+    }
+
+    //Populate teachers table
+    public static void populateTeachers(ArrayList<String> fileData) {
+        String[] teacherNames = fileData.get(0).split(",");
+        String[] departmentNames = fileData.get(1).split(",");
+
+        for (int i = 0; i < teacherNames.length; i++) {
+            String[] teacherNameSplit = teacherNames[i].trim().split(" ");
+
+            teachers[i] = new Teacher();
+
+            String teacherFirstName = teacherNameSplit[0];
+            String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
+            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
+
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
+        }
+    }
+
+    public static void populateStudentSchedules() {
+        for (int i = 0; i < students.length; i++) {    //5000 students
             for (int j = 1; j <= 10; j++) {   //each have 10 courses
                 System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
+    }
 
-        //Populate department_id table
 
+    public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
-
     }
-
-    //Populate teachers table
-    public static void generateTeachers(ArrayList<String> fileData) {
-        String[] teacherNames = fileData.get(0).split(",");
-        String[] departmentNames = fileData.get(1).split(",");
-
-
-        for (int i = 0; i < teacherNames.length; i++) {
-            String[] teacherSplit = teacherNames[i].trim().split(" ");
-            String teacherFirstName = teacherSplit[0];
-            String teacherLastName = teacherSplit[teacherSplit.length - 1];
-            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
-
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('"
-                    + i + "', '"
-                    + teacherFirstName + " " + teacherLastName + "', '"
-                    + departmentId + "');");
-        }
-    }
-
 }
