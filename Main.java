@@ -93,12 +93,7 @@ public class Main {
 
         //THEN A STUDENT COULD POPULATE
 
-
-
-        //Populate course type table
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+        populateCourses();
 
         //Populate roster table
 
@@ -132,6 +127,12 @@ public class Main {
         }
     }
 
+    public static void populateCourses() {
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+    }
+
     public static void populateStudentSchedules() {
         for (int i = 0; i < students.length; i++) {    //5000 students
             for (int j = 1; j <= 10; j++) {   //each have 10 courses
@@ -139,7 +140,6 @@ public class Main {
             }
         }
     }
-
 
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
@@ -163,6 +163,4 @@ public class Main {
             return fileData;
         }
     }
-
-
 }
