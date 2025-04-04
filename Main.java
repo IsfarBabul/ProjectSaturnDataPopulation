@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     private static Teacher[] teachers = new Teacher[200];
@@ -50,8 +53,6 @@ public class Main {
         //Populate assignment type table (may not be needed)
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
-
-        //Populate courses table
 
 
 
@@ -121,6 +122,11 @@ public class Main {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
 
+        //Populate courses table
+
+
+
+
     }
 
     //Populate teachers table
@@ -143,6 +149,22 @@ public class Main {
         }
     }
 
+    public static ArrayList<String> getFileData(String fileName) {
+        ArrayList<String> fileData = new ArrayList<String>();
+        try {
+            File f = new File(fileName);
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                if (!line.isEmpty())
+                    fileData.add(line);
+            }
+            return fileData;
+        }
+        catch (FileNotFoundException e) {
+            return fileData;
+        }
+    }
 
 
 }
