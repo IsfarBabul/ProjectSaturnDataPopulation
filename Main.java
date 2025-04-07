@@ -9,10 +9,11 @@ public class Main {
     private static String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
     public static void main(String[] args) {
-        // Teachers Table
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
         }
+
+
 
         // Populate teacher schedule table
         for (int i = 0; i < 200; i++) {    //200 teachers
@@ -21,11 +22,6 @@ public class Main {
             }
         }
 
-
-        //Populate students table
-        for (int i = 1; i <= 5000; i++) {
-            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
-        }
 
         //Populate assignments table
         int assignmentCount = 1;
@@ -86,19 +82,6 @@ public class Main {
                 course_offering_id++;
             }
         }
-
-        //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
-        //ASSIGN A PERIOD TO A COURSE OFFERING
-        //REMOVE COURSE OFFERING LATER
-
-        //THEN A STUDENT COULD POPULATE
-
-
-        //Populate roster table
-
-        //I assume 150 course offerings for now.
-
-
     }
     public static ArrayList<String> getFileData(String fileName) {
         ArrayList<String> fileData = new ArrayList<String>();
@@ -132,6 +115,12 @@ public class Main {
             String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
 
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
+        }
+    }
+
+    public static void populateStudents() {
+        for (int i = 1; i <= 5000; i++) {
+            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
         }
     }
 
