@@ -10,33 +10,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-
-        //Populate course offering table
-
-        //I'm assuming 50 courses but this can be different.
-
-
-
-        //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
-        //ASSIGN A PERIOD TO A COURSE OFFERING
-        //REMOVE COURSE OFFERING LATER
-
-        //THEN A STUDENT COULD POPULATE
-
-        populateCoursesTypes();
-
-        //Populate roster table
-
-        //I assume 150 course offerings for now.
-
-        for (int i = 0; i < 150; i++) {
-            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
+        // Populate teacher schedule table
+        for (int i = 0; i < 200; i++) {    //200 teachers
+            for (int j = 1; j <= 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            }
         }
-
-        populateStudentSchedules();
-
-        populateDepartments();
     }
 
     public static void populateAssignmentGrades() {
@@ -48,7 +27,7 @@ public class Main {
     }
 
     public static void populateStudents() {
-        for (int i = 1; i <= 5000; i++) {
+        for (int i = 0; i < 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
         }
     }
@@ -71,9 +50,37 @@ public class Main {
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
+
+
+
+
+        //Populate course offering table
+
+        //I'm assuming 50 courses but this can be different.
+
+        
+
+        //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
+        //ASSIGN A PERIOD TO A COURSE OFFERING
+        //REMOVE COURSE OFFERING LATER
+
+        //THEN A STUDENT COULD POPULATE
+
+        //populateCourses();
+
+        //Populate roster table
+
+        //I assume 150 course offerings for now.
+
+        for (int i = 0; i < 150; i++) {
+            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
+        }
+
+        //populateStudentSchedules();
+
+        //populateDepartments();
     }
 
-    //Populate teachers table
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -100,8 +107,8 @@ public class Main {
 
     public static void populateStudentSchedules() {
         for (int i = 0; i < students.length; i++) {    //5000 students
-            for (int j = 1; j <= 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            for (int j = 0; j < 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
     }
@@ -154,6 +161,12 @@ public class Main {
         }
         catch (FileNotFoundException e) {
             return fileData;
+        }
+    }
+            
+    public static void populateRoster() {
+        for (int i = 0; i < 150; i++) {
+            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
     }
 }
