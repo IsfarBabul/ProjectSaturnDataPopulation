@@ -52,13 +52,10 @@ public class Main {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
 
 
-
-
         //Populate course offering table
 
         //I'm assuming 50 courses but this can be different.
 
-        
 
         //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
         //ASSIGN A PERIOD TO A COURSE OFFERING
@@ -158,12 +155,11 @@ public class Main {
                     fileData.add(line);
             }
             return fileData;
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             return fileData;
         }
     }
-            
+
     public static void populateRoster() {
         for (int i = 0; i < 150; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
