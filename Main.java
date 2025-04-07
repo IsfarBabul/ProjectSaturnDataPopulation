@@ -9,7 +9,7 @@ public class Main {
     private static String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
     public static void main(String[] args) {
-        // Create Teachers
+        // Teachers Table
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
         }
@@ -93,22 +93,30 @@ public class Main {
 
         //THEN A STUDENT COULD POPULATE
 
-        populateCourses();
 
         //Populate roster table
 
         //I assume 150 course offerings for now.
 
-        for (int i = 0; i < 150; i++) {
-            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
+
+    }
+    public static ArrayList<String> getFileData(String fileName) {
+        ArrayList<String> fileData = new ArrayList<String>();
+        try {
+            File f = new File(fileName);
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                if (!line.isEmpty())
+                    fileData.add(line);
+            }
+            return fileData;
         }
-
-        populateStudentSchedules();
-
-        populateDepartments();
+        catch (FileNotFoundException e) {
+            return fileData;
+        }
     }
 
-    //Populate teachers table
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -135,8 +143,8 @@ public class Main {
 
     public static void populateStudentSchedules() {
         for (int i = 0; i < students.length; i++) {    //5000 students
-            for (int j = 1; j <= 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            for (int j = 0; j < 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
     }
@@ -147,20 +155,9 @@ public class Main {
         }
     }
 
-    public static ArrayList<String> getFileData(String fileName) {
-        ArrayList<String> fileData = new ArrayList<String>();
-        try {
-            File f = new File(fileName);
-            Scanner s = new Scanner(f);
-            while (s.hasNextLine()) {
-                String line = s.nextLine();
-                if (!line.isEmpty())
-                    fileData.add(line);
-            }
-            return fileData;
-        }
-        catch (FileNotFoundException e) {
-            return fileData;
+    public static void populateRoster() {
+        for (int i = 0; i < 150; i++) {
+            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
     }
 }
