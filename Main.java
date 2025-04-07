@@ -9,6 +9,11 @@ public class Main {
     private static String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
     public static void main(String[] args) {
+        for (int i = 0; i < 200; i++) {
+            teachers[i] = new Teacher();
+        }
+
+
 
         // Populate teacher schedule table
         for (int i = 0; i < 200; i++) {    //200 teachers
@@ -26,13 +31,7 @@ public class Main {
         }
     }
 
-    public static void populateStudents() {
-        for (int i = 0; i < 5000; i++) {
-            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
-        }
-    }
-
-    public static void populateAssignments() {
+        //Populate assignments table
         int assignmentCount = 1;
         for (int i = 1; i <= 5; i++) {      //number of course offerings; 5 is an example
             for (int j = 1; j <= 12; j++) {    //three assignment types
@@ -45,11 +44,21 @@ public class Main {
             }
             assignmentCount++;
         }
-    }
+
+
+
+        //Populate assignments grade table
+        /* for (int i = 1; i <= 5000; i++) { //each student gets assignments
+            for (int j = 0; j < 15; j++) {     //number of assignments
+                System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
+            }
+        } */
 
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
+
+
 
 
         //Populate course offering table
@@ -157,6 +166,50 @@ public class Main {
             return fileData;
         } catch (FileNotFoundException e) {
             return fileData;
+        }
+    }
+
+    public static void populateTeachers(ArrayList<String> fileData) {
+        String[] teacherNames = fileData.get(0).split(",");
+        String[] departmentNames = fileData.get(1).split(",");
+
+
+        for (int i = 0; i < teacherNames.length; i++) {
+            String[] teacherNameSplit = teacherNames[i].trim().split(" ");
+
+            teachers[i] = new Teacher();
+
+            String teacherFirstName = teacherNameSplit[0];
+            String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
+            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
+
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
+        }
+    }
+
+    public static void populateStudents() {
+        for (int i = 1; i <= 5000; i++) {
+            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
+        }
+    }
+
+    public static void populateCourses() {
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+    }
+
+    public static void populateStudentSchedules() {
+        for (int i = 0; i < students.length; i++) {    //5000 students
+            for (int j = 0; j < 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
+            }
+        }
+    }
+
+    public static void populateDepartments() {
+        for (int i = 0; i < departments.length; i++) {
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
     }
 
