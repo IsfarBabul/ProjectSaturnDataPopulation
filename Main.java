@@ -42,12 +42,11 @@ public class Main {
                 System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MajorAssignment" + (assignmentCount) + "', " + 2 + ", " + i + " );");
                 assignmentCount++;
             }
-            assignmentCount++;
-        }
+        assignmentCount++;
+    }
 
 
-
-        //Populate assignments grade table
+    //Populate assignments grade table
         /* for (int i = 1; i <= 5000; i++) { //each student gets assignments
             for (int j = 0; j < 15; j++) {     //number of assignments
                 System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
