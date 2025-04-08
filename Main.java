@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -21,6 +22,8 @@ public class Main {
                 System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
             }
         }
+
+        populateCourses();
     }
 
     public static void populateAssignmentGrades() {
@@ -154,6 +157,61 @@ public class Main {
         }
     }
 
+    public static void populateCourses() {
+        ArrayList<String> parsedSubjects = getFileData("subjects.txt");
+        ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
+        //System.out.println("PARSED: " + parsedSubjects.size());
+        for (int i = 0; i < parsedSubjects.size(); i++) {
+            String[] subjectLine = parsedSubjects.get(i).split("\\|");
+            //System.out.println(subjectLine.length);
+            parsedSubjects2DArray.add(subjectLine);
+        }
+        System.out.println(parsedSubjects);
+        System.out.println(parsedSubjects2DArray);
+        //BELOW IS FOR PRINTING
+        for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
+            for (int j = 0; j < parsedSubjects2DArray.get(i).length; j++) {
+                System.out.println(parsedSubjects2DArray.get(i)[j]);
+            }
+            System.out.println();
+        }
+        //ABOVE IS FOR PRINTING
+        int course_id = 0;
+        for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
+            for (int j = 1; j < parsedSubjects2DArray.get(i).length; j++) {   //Index 0 would be the department the course is in which we do not want to include!
+                String course_name = parsedSubjects2DArray.get(i)[j];
+                int course_type_id = 1;
+                if (course_name.contains("Regents")) {       //contains() is appropriate because we could have regents courses called "Regents Physics" or "10th Grade Regents Global History"
+                    course_type_id = 2;
+                } else if (course_name.startsWith("AP")) {   //startWith() is appropriate to include AP courses like "AP Computer Science A" but to exclude courses such as "Spanish IV - Pre-AP"
+                    course_type_id = 3;
+                }
+                System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + course_id + ", " + course_name + ", " + course_type_id + " )");
+                course_id++;
+            }
+        }
+    }
+
+    public static void populateStudents() {
+        for (int i = 1; i <= 5000; i++) {
+            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
+        }
+    }
+
+    public static void populateCourseTypes() {
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+    }
+
+    public static void populateRoster() {
+        for (int i = 0; i < 150; i++) {
+            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
+        }
+    }
+
+    //---------------------UTILITY METHODS GO BELOW THIS LINE---------------------------------\\
+
     public static ArrayList<String> getFileData(String fileName) {
         ArrayList<String> fileData = new ArrayList<String>();
         try {
@@ -167,24 +225,6 @@ public class Main {
             return fileData;
         } catch (FileNotFoundException e) {
             return fileData;
-        }
-    }
-
-    public static void populateStudents() {
-        for (int i = 1; i <= 5000; i++) {
-            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
-        }
-    }
-
-    public static void populateCourses() {
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
-    }
-
-    public static void populateRoster() {
-        for (int i = 0; i < 150; i++) {
-            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
     }
 }
