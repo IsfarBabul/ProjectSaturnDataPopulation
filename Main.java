@@ -12,17 +12,6 @@ public class Main {
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
         }
-
-
-
-        // Populate teacher schedule table
-        for (int i = 0; i < 200; i++) {    //200 teachers
-            for (int j = 1; j <= 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
-            }
-        }
-
-        populateCourses();
     }
 
     public static void populateAssignments() {
@@ -85,10 +74,14 @@ public class Main {
         }
     }
     public static void populateTeacherSchedules() {
-        // TODO: finish method
+        for (int i = 0; i < 200; i++) {    //200 teachers
+            for (int j = 1; j <= 10; j++) {   //each have 10 courses
+                System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+            }
+        }
     }
     public static void populateCourses() {
-        ArrayList<String> parsedSubjects = getFileData("subjects.txt");
+        ArrayList<String> parsedSubjects = getFileData("Courses.txt");
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
         //System.out.println("PARSED: " + parsedSubjects.size());
         for (int i = 0; i < parsedSubjects.size(); i++) {
