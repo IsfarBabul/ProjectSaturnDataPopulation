@@ -32,6 +32,7 @@ public class Main {
     }
 
         //Populate assignments table
+    public static void populateAssignments() {
         int assignmentCount = 1;
         for (int i = 1; i <= 5; i++) {      //number of course offerings; 5 is an example
             for (int j = 1; j <= 12; j++) {    //three assignment types
@@ -42,7 +43,8 @@ public class Main {
                 System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MajorAssignment" + (assignmentCount) + "', " + 2 + ", " + i + " );");
                 assignmentCount++;
             }
-        assignmentCount++;
+            assignmentCount++;
+        }
     }
 
 
@@ -168,24 +170,6 @@ public class Main {
         }
     }
 
-    public static void populateTeachers(ArrayList<String> fileData) {
-        String[] teacherNames = fileData.get(0).split(",");
-        String[] departmentNames = fileData.get(1).split(",");
-
-
-        for (int i = 0; i < teacherNames.length; i++) {
-            String[] teacherNameSplit = teacherNames[i].trim().split(" ");
-
-            teachers[i] = new Teacher();
-
-            String teacherFirstName = teacherNameSplit[0];
-            String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
-            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
-        }
-    }
-
     public static void populateStudents() {
         for (int i = 1; i <= 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
@@ -196,20 +180,6 @@ public class Main {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
-    }
-
-    public static void populateStudentSchedules() {
-        for (int i = 0; i < students.length; i++) {    //5000 students
-            for (int j = 0; j < 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
-            }
-        }
-    }
-
-    public static void populateDepartments() {
-        for (int i = 0; i < departments.length; i++) {
-            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
-        }
     }
 
     public static void populateRoster() {
