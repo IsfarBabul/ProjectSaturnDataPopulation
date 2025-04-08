@@ -33,11 +33,9 @@ public class Main {
             }
         }
     }
-
-        //Populate assignments table
     public static void populateAssignments() {
         int assignmentCount = 1;
-        for (int i = 1; i <= 5; i++) {      //number of course offerings; 5 is an example
+        for (int i = 0; i < 5; i++) {      //number of course offerings; 5 is an example
             for (int j = 1; j <= 12; j++) {    //three assignment types
                 System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MinorAssignment" + (assignmentCount) + "', " + 1 + ", " + i + " );");
                 assignmentCount++;
@@ -49,48 +47,10 @@ public class Main {
             assignmentCount++;
         }
     }
-
-
-    //Populate assignments grade table
-        /* for (int i = 1; i <= 5000; i++) { //each student gets assignments
-            for (int j = 0; j < 15; j++) {     //number of assignments
-                System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
-            }
-        } */
-
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
-
-
-
-
-        //Populate course offering table
-
-        //I'm assuming 50 courses but this can be different.
-
-
-        //TO ASSIGN PERIODS RANDOMIZE MAKE AN ARRAY OF 1 TO 10
-        //ASSIGN A PERIOD TO A COURSE OFFERING
-        //REMOVE COURSE OFFERING LATER
-
-        //THEN A STUDENT COULD POPULATE
-
-        //populateCourses();
-
-        //Populate roster table
-
-        //I assume 150 course offerings for now.
-
-        for (int i = 0; i < 150; i++) {
-            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
-        }
-
-        //populateStudentSchedules();
-
-        //populateDepartments();
     }
-
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -108,13 +68,11 @@ public class Main {
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
         }
     }
-
     public static void populateCoursesTypes() {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
     }
-
     public static void populateStudentSchedules() {
         for (int i = 0; i < students.length; i++) {    //5000 students
             for (int j = 0; j < 10; j++) {   //each have 10 courses
@@ -122,13 +80,11 @@ public class Main {
             }
         }
     }
-
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
     }
-
     public static void populateCourseOfferings() {
         int course_offering_id = 0;
         String[] room_wings = {"N", "E", "S", "W"};
@@ -156,7 +112,6 @@ public class Main {
             }
         }
     }
-
     public static void populateCourses() {
         ArrayList<String> parsedSubjects = getFileData("subjects.txt");
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
@@ -191,19 +146,16 @@ public class Main {
             }
         }
     }
-
     public static void populateStudents() {
-        for (int i = 1; i <= 5000; i++) {
-            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + i + ", 'Student" + i + "' );");
+        for (int i = 0; i < 5000; i++) {
+            System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
     }
-
     public static void populateCourseTypes() {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
     }
-
     public static void populateRoster() {
         for (int i = 0; i < 150; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
