@@ -56,7 +56,9 @@ public class Main {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
     }
-  public static void populateTeachers(ArrayList<String> fileData) {
+
+
+    public static void populateTeachers(ArrayList<String> fileData) {
     String[] teacherNames = fileData.get(0).split(",");
     String[] departmentNames = fileData.get(1).split(",");
     
@@ -78,12 +80,8 @@ public class Main {
         teacherCount++; // Increment counter
     }
     
-    // Print the total count after processing all teachers
-    System.out.println("\n-- Total teachers inserted: " + teacherCount);
-}
-    
-    // Print the total count after processing all teachers
-    System.out.println("\n-- Total teachers inserted: " + teacherCount);
+    // Print the total count 
+    System.out.println("\n-- Total teachers : " + teacherCount);
 }
 
     
