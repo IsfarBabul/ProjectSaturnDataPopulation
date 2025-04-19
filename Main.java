@@ -73,13 +73,18 @@ public class Main {
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
         }
     }
-    public static void populateTeacherSchedules() {
-        for (int i = 0; i < 200; i++) {    //200 teachers
-            for (int j = 1; j <= 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
-            }
-        }
-    }
+
+    
+    // public static void populateTeacherSchedules() {
+    //     for (int i = 0; i < 200; i++) {    //200 teachers
+    //         for (int j = 1; j <= 10; j++) {   //each have 10 courses
+    //             System.out.println("INSERT INTO TeacherSchedule ( teacher_id, roster_id ) VALUES ( " + i + " )"); //TODO: ROSTER ID REQUIRED
+    //         }
+    //     }
+    // }
+
+
+    
     public static void populateCourses() {
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
