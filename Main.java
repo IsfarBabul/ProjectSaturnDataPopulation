@@ -56,23 +56,35 @@ public class Main {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
         }
     }
-    public static void populateTeachers(ArrayList<String> fileData) {
-        String[] teacherNames = fileData.get(0).split(",");
-        String[] departmentNames = fileData.get(1).split(",");
+  public static void populateTeachers(ArrayList<String> fileData) {
+    String[] teacherNames = fileData.get(0).split(",");
+    String[] departmentNames = fileData.get(1).split(",");
+    
+    int teacherCount = 0; // Counter for number of teachers 
 
+    for (int i = 0; i < teacherNames.length; i++) {
+        String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
-        for (int i = 0; i < teacherNames.length; i++) {
-            String[] teacherNameSplit = teacherNames[i].trim().split(" ");
+        teachers[i] = new Teacher();
 
-            teachers[i] = new Teacher();
+        String teacherFirstName = teacherNameSplit[0];
+        String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
+        String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
 
-            String teacherFirstName = teacherNameSplit[0];
-            String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
-            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES ('" + i + "', '" + teacherFirstName + " " + teacherLastName + "', '" + departmentId + "');");
-        }
+        System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + 
+                          i + ", '" + teacherFirstName + " " + teacherLastName + "', " + 
+                          departmentId + ");");
+        
+        teacherCount++; // Increment counter
     }
+    
+    // Print the total count after processing all teachers
+    System.out.println("\n-- Total teachers inserted: " + teacherCount);
+}
+    
+    // Print the total count after processing all teachers
+    System.out.println("\n-- Total teachers inserted: " + teacherCount);
+}
 
     
     // public static void populateTeacherSchedules() {
