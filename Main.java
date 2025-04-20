@@ -162,6 +162,8 @@ public class Main {
             }
         }
 
+
+        // Masroor's Code
 //        int[] periodCounts = new int[10];
 //        int[] teacherAssignments = new int[teacherCountForCourseOfferings];
 //        int room_index = 0;
