@@ -19,19 +19,28 @@ public class Main {
     }
 
     public static void populateAssignments() {
-        int assignmentCount = 1;
-        for (int i = 0; i < 5; i++) {      //number of course offerings; 5 is an example
-            for (int j = 1; j <= 12; j++) {    //three assignment types
-                System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MinorAssignment" + (assignmentCount) + "', " + 1 + ", " + i + " );");
-                assignmentCount++;
-            }
-            for (int j = 1; j <= 3; j++) {    //three assignment types
-                System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MajorAssignment" + (assignmentCount) + "', " + 2 + ", " + i + " );");
-                assignmentCount++;
-            }
-            assignmentCount++;
+    int assignment_id = 0;
+    // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
+    for (int offering_id = 0; offering_id < 600; offering_id++) {
+        for (int j = 1; j <= 12; j++) {
+            System.out.println(
+                "INSERT INTO Assignments VALUES (" +
+                assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
+            );
+            assignment_id++;
         }
-    } // DONE* REQUIRES COURSE_OFFERING
+        for (int j = 1; j <= 3; j++) {
+            System.out.println(
+                "INSERT INTO Assignments VALUES (" +
+                assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
+            );
+            assignment_id++;
+        }
+    }
+}
+
+
+
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
@@ -49,12 +58,15 @@ public class Main {
         }
     } // DONE
     public static void populateStudentSchedules() {
-        for (int i = 0; i < students.length; i++) {    //5000 students
-            for (int j = 0; j < 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
+        for (int student_id = 1; student_id <= students.length; student_id++) {
+            for (int period = 1; period <= 10; period++) {
+                System.out.println("INSERT INTO StudentSchedule (student_id, roster_id) VALUES (" +
+                        student_id + ", " + (int)(Math.random() * 600) + ");"); // Random roster 0-599( we said 600)
             }
         }
     } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
+    
+    
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
@@ -149,9 +161,55 @@ public class Main {
                 course_offering_id++;
             }
         }
+
+//        int[] periodCounts = new int[10];
+//        int[] teacherAssignments = new int[teacherCountForCourseOfferings];
+//        int room_index = 0;
+//
+//        for (int course_id = 0; course_id < 120; course_id++) {
+//            int num_of_course_offerings = (int)(Math.random() * 5) + 1;
+//
+//            for (int j = 0; j < num_of_course_offerings; j++) {
+//                int period = getValidPeriod(periodCounts);
+//                int teacher_id = getValidTeacher(teacherAssignments);
+//
+//                periodCounts[period-1]++;
+//                teacherAssignments[teacher_id]++;
+//
+//                System.out.println("INSERT INTO CourseOffering VALUES (" +
+//                        course_offering_id + ", '" + allRoomNumbers.get(room_index) +
+//                        "', " + course_id + ", " + teacher_id + ", " + period + ");");
+//
+//                room_index++;
+//                course_offering_id++;
+//            }
+//        }
+
     } // DONE
+
+    private static int getValidPeriod(int[] periodCounts) {
+        int period;
+        while (true) {
+            period = (int)(Math.random() * 10) + 1;
+            if (periodCounts[period-1] < 60) {
+                return period;
+            }
+        }
+    }
+
+    private static int getValidTeacher(int[] teacherAssignments) {
+        int teacher_id;
+        while (true) {
+            teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+            if (teacherAssignments[teacher_id] < 5) {
+                return teacher_id;
+            }
+        }
+    }
+
     public static void populateRoster() {
-        for (int i = 0; i < 150; i++) {
+        //used to be 150
+        for (int i = 0; i < 600; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
     } // NEEDS PROPER VALUES
