@@ -8,6 +8,10 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
+    private static int teacherCountForCourseOfferings = 0
+
+
+    
     public static void main(String[] args) {
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
@@ -77,11 +81,11 @@ public class Main {
                           i + ", '" + teacherFirstName + " " + teacherLastName + "', " + 
                           departmentId + ");");
         
-        teacherCount++; // Increment counter
+        teacherCountForCourseOfferings++ // Increment counter
     }
     
     // Print the total count 
-    System.out.println("\n-- Total teachers : " + teacherCount);
+    System.out.println("\n-- Total teachers : " + teacherCountForCourseOfferings++);
 }
 
     
@@ -154,12 +158,18 @@ public class Main {
         for (int i = 0; i < 50; i++) {
             int num_of_course_offerings = (int) (Math.random() * 5) + 1;
             for (int j = 0; j < num_of_course_offerings; j++) {
+
+                int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
                 System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + " )"); //TODO: MORE VALUES LEFT
                 room_index++;
                 course_offering_id++;
             }
         }
     }
+
+
+
+    
     public static void populateRoster() {
         for (int i = 0; i < 150; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
