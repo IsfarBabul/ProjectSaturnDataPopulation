@@ -65,8 +65,8 @@ public class Main {
             }
         }
     } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
-    
-    
+
+
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
@@ -150,12 +150,38 @@ public class Main {
 
         int room_index = 0;
         int course_offering_id = 0;
-        for (int i = 0; i < 50; i++) { // SHOULD BE LENGTH OF COURSES ARRAY
+
+        class blacklistedTeacherPeriodCombo {
+            public int teacher_id;
+            public int period;
+
+            public blacklistedTeacherPeriodCombo(int teacherId, int period) {
+                this.teacher_id = teacherId;
+                this.period = period;
+            }
+        }
+
+        ArrayList<blacklistedTeacherPeriodCombo> blacklistArray = new ArrayList<>();
+
+        for (int i = 0; i < 120; i++) { // SHOULD BE LENGTH OF COURSES ARRAY
             int num_of_course_offerings = (int) (Math.random() * 5) + 1;
             for (int j = 0; j < num_of_course_offerings; j++) {
-                int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-                int period = (int)(Math.random() * 10) + 1;
+                int teacher_id = -1;
+                int period = -1;
+                boolean isBlacklisted = false;
+                do {
+                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings);    //WARNING: populateTeachers() method must be called before this method
+                    period = (int) (Math.random() * 10) + 1;
+                    for (blacklistedTeacherPeriodCombo combo : blacklistArray) {
+                        if (teacher_id == combo.teacher_id && period == combo.period) {
+                            isBlacklisted = true;
+                            break;
+                        }
+                    }
+                } while (isBlacklisted);
+
                 System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )");
+                blacklistArray.add(new blacklistedTeacherPeriodCombo(teacher_id, period));
                 room_index++;
                 course_offering_id++;
             }
