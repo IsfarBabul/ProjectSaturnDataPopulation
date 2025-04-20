@@ -22,14 +22,14 @@ public class Main {
         int assignment_id = 0;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
         for (int offering_id = 0; offering_id < 600; offering_id++) {
-            for (int j = 1; j <= 12; j++) {
+            for (int j = 0; j < 12; j++) {
                 System.out.println(
                     "INSERT INTO Assignments VALUES (" +
                     assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
                 );
                 assignment_id++;
             }
-            for (int j = 1; j <= 3; j++) {
+            for (int j = 0; j < 3; j++) {
                 System.out.println(
                     "INSERT INTO Assignments VALUES (" +
                     assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
@@ -46,7 +46,7 @@ public class Main {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
     } // DONE
     public static void populateAssignmentGrades() {
-        for (int i = 1; i <= 5000; i++) { //each student gets assignments
+        for (int i = 0; i < 5000; i++) { //each student gets assignments
             for (int j = 0; j < 15; j++) {     //number of assignments
                 System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
             }
@@ -58,8 +58,8 @@ public class Main {
         }
     } // DONE
     public static void populateStudentSchedules() {
-        for (int student_id = 1; student_id <= students.length; student_id++) {
-            for (int period = 1; period <= 10; period++) {
+        for (int student_id = 0; student_id < students.length; student_id++) {
+            for (int period = 0; period < 10; period++) {
                 System.out.println("INSERT INTO StudentSchedule (student_id, roster_id) VALUES (" +
                         student_id + ", " + (int)(Math.random() * 600) + ");"); // Random roster 0-599( we said 600)
             }
@@ -107,14 +107,14 @@ public class Main {
             parsedSubjects2DArray.add(subjectLine);
         }
 
-        //BELOW IS FOR PRINTING
+        //BELOW IS FOR PRINTING-----------------------------------------------
         for (String[] strings : parsedSubjects2DArray) {
             for (String string : strings) {
                 System.out.println(string);
             }
             System.out.println();
         }
-        //ABOVE IS FOR PRINTING
+        //ABOVE IS FOR PRINTING---------------------------------------------
 
         for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
             String course_name = parsedSubjects2DArray.get(i)[1];
@@ -138,7 +138,7 @@ public class Main {
         ArrayList<String> allRoomNumbers = new ArrayList<>();
         for (String floor_number : floor_numbers) {
             for (String room_wing : room_wings) {
-                for (int i = 1; i <= 20; i++) {
+                for (int i = 1; i < 21; i++) {
                     String zeroPad = "";
                     if (i < 10) {
                         zeroPad = "0";
