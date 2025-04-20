@@ -61,12 +61,9 @@ public class Main {
         }
     }
 
-
     public static void populateTeachers(ArrayList<String> fileData) {
     String[] teacherNames = fileData.get(0).split(",");
     String[] departmentNames = fileData.get(1).split(",");
-    
-    int teacherCount = 0; // Counter for number of teachers 
 
     for (int i = 0; i < teacherNames.length; i++) {
         String[] teacherNameSplit = teacherNames[i].trim().split(" ");
@@ -81,11 +78,11 @@ public class Main {
                           i + ", '" + teacherFirstName + " " + teacherLastName + "', " + 
                           departmentId + ");");
         
-        teacherCountForCourseOfferings++ // Increment counter
+        teacherCountForCourseOfferings++; //  single increment
     }
     
     // Print the total count 
-    System.out.println("\n-- Total teachers : " + teacherCountForCourseOfferings++);
+    System.out.println("\n-- Total teachers: " + teacherCountForCourseOfferings);
 }
 
     
