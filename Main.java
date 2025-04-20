@@ -137,36 +137,82 @@ public class Main {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
     }
+    // public static void populateCourseOfferings() {
+    //     int course_offering_id = 0;
+    //     String[] room_wings = {"N", "E", "S", "W"};
+    //     String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
+    //     ArrayList<String> allRoomNumbers = new ArrayList<>();
+    //     for (String floor_number : floor_numbers) {
+    //         for (String room_wing : room_wings) {
+    //             for (int i = 1; i <= 20; i++) {
+    //                 String zeroPad = "";
+    //                 if (i < 10) {
+    //                     zeroPad = "0";
+    //                 }
+    //                 allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
+    //             }
+    //         }
+    //     }
+    //     int room_index = 0;
+
+    //     for (int i = 0; i < 50; i++) {
+    //         int num_of_course_offerings = (int) (Math.random() * 5) + 1;
+    //         for (int j = 0; j < num_of_course_offerings; j++) {
+
+    //             int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+    //             System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + " )"); //TODO: MORE VALUES LEFT
+    //             room_index++;
+    //             course_offering_id++;
+    //         }
+    //     }
+    // }
+
+
     public static void populateCourseOfferings() {
-        int course_offering_id = 0;
-        String[] room_wings = {"N", "E", "S", "W"};
-        String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
-        ArrayList<String> allRoomNumbers = new ArrayList<>();
-        for (String floor_number : floor_numbers) {
-            for (String room_wing : room_wings) {
-                for (int i = 1; i <= 20; i++) {
-                    String zeroPad = "";
-                    if (i < 10) {
-                        zeroPad = "0";
-                    }
-                    allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
+    int course_offering_id = 0;
+    String[] room_wings = {"N", "E", "S", "W"};
+    String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
+    ArrayList<String> allRoomNumbers = new ArrayList<>();
+    
+    for (String floor_number : floor_numbers) {
+        for (String room_wing : room_wings) {
+            for (int i = 1; i <= 20; i++) {
+                String zeroPad = "";
+                if (i < 10) {
+                    zeroPad = "0";
                 }
-            }
-        }
-        int room_index = 0;
-
-        for (int i = 0; i < 50; i++) {
-            int num_of_course_offerings = (int) (Math.random() * 5) + 1;
-            for (int j = 0; j < num_of_course_offerings; j++) {
-
-                int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + " )"); //TODO: MORE VALUES LEFT
-                room_index++;
-                course_offering_id++;
+                allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
             }
         }
     }
+    
+    int[] periodCounts = new int[10];
+    int[] teacherAssignments = new int[teacherCountForCourseOfferings];
+    int room_index = 0;
 
+    for (int course_id = 0; course_id < 120; course_id++) {
+        int num_of_course_offerings = (int)(Math.random() * 5) + 1;
+        
+        for (int j = 0; j < num_of_course_offerings; j++) {
+            int period = (int)(Math.random() * 10) + 1;
+            while (periodCounts[period-1] >= 60) {
+                period = (int)(Math.random() * 10) + 1;
+            }
+            periodCounts[period-1]++;
+            
+            int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+            while (teacherAssignments[teacher_id] >= 5) {
+                teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+            }
+            teacherAssignments[teacher_id]++;
+            
+            System.out.println("INSERT INTO CourseOffering (course_offering_id, course_offering_room, course_id, teacher_id, period) VALUES (" + course_offering_id + ", '" + allRoomNumbers.get(room_index) + "', " + course_id + ", " + teacher_id + ", " + period + ");");
+            
+            room_index++;
+            course_offering_id++;
+        }
+    }
+}
 
 
     
