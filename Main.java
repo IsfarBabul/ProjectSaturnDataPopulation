@@ -19,25 +19,25 @@ public class Main {
     }
 
     public static void populateAssignments() {
-    int assignment_id = 0;
-    // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
-    for (int offering_id = 0; offering_id < 600; offering_id++) {
-        for (int j = 1; j <= 12; j++) {
-            System.out.println(
-                "INSERT INTO Assignments VALUES (" +
-                assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
-            );
-            assignment_id++;
-        }
-        for (int j = 1; j <= 3; j++) {
-            System.out.println(
-                "INSERT INTO Assignments VALUES (" +
-                assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
-            );
-            assignment_id++;
+        int assignment_id = 0;
+        // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
+        for (int offering_id = 0; offering_id < 600; offering_id++) {
+            for (int j = 1; j <= 12; j++) {
+                System.out.println(
+                    "INSERT INTO Assignments VALUES (" +
+                    assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
+                );
+                assignment_id++;
+            }
+            for (int j = 1; j <= 3; j++) {
+                System.out.println(
+                    "INSERT INTO Assignments VALUES (" +
+                    assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
+                );
+                assignment_id++;
+            }
         }
     }
-}
 
 
 
@@ -76,8 +76,6 @@ public class Main {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
 
-        int teacherCount = 0; // Counter for number of teachers
-
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
@@ -91,6 +89,7 @@ public class Main {
                               i + ", '" + teacherFirstName + " " + teacherLastName + "', " +
                               departmentId + ");");
 
+            // what is this variable even supposed to represent and how is it not redundant
             teacherCountForCourseOfferings++; // Increment counter
         }
 
@@ -103,15 +102,15 @@ public class Main {
 
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
         // populate parsedSubjects2DArray
-        for (int i = 0; i < parsedSubjects.size(); i++) {
-            String[] subjectLine = parsedSubjects.get(i).split("\\|");
+        for (String parsedSubject : parsedSubjects) {
+            String[] subjectLine = parsedSubject.split("\\|");
             parsedSubjects2DArray.add(subjectLine);
         }
 
         //BELOW IS FOR PRINTING
-        for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
-            for (int j = 0; j < parsedSubjects2DArray.get(i).length; j++) {
-                System.out.println(parsedSubjects2DArray.get(i)[j]);
+        for (String[] strings : parsedSubjects2DArray) {
+            for (String string : strings) {
+                System.out.println(string);
             }
             System.out.println();
         }
@@ -156,7 +155,7 @@ public class Main {
             for (int j = 0; j < num_of_course_offerings; j++) {
                 int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
                 int period = (int)(Math.random() * 10) + 1;
-                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )"); //TODO: MORE VALUES LEFT
+                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )");
                 room_index++;
                 course_offering_id++;
             }
