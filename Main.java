@@ -9,6 +9,7 @@ public class Main {
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
     private static int teacherCountForCourseOfferings = 0;
+    private static int courseOfferingIDCount = 0;
 
 
     
@@ -21,7 +22,7 @@ public class Main {
     public static void populateAssignments() {
         int assignment_id = 0;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
-        for (int offering_id = 0; offering_id < 600; offering_id++) {
+        for (int offering_id = 0; offering_id < courseOfferingIDCount; offering_id++) {    //call this after course offering id is called
             for (int j = 0; j < 12; j++) {
                 System.out.println(
                     "INSERT INTO Assignments VALUES (" +
@@ -37,7 +38,7 @@ public class Main {
                 assignment_id++;
             }
         }
-    }
+    } // DONE
 
 
 
@@ -48,10 +49,10 @@ public class Main {
     public static void populateAssignmentGrades() {
         for (int i = 0; i < 5000; i++) { //each student gets assignments
             for (int j = 0; j < 15; j++) {     //number of assignments
-                System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + "', " + i + " );");
+                System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + " );");
             }
         }
-    } // NEEDS PROPER VALUES FOR STUDENT_ID
+    } // NEEDS PROPER VALUES FOR STUDENT_ID - AIVIN       Assignment_Id has some issue where its only being populated with numbers 1 to 15 so only assignments from the very first course offering are being represented - Isfar
     public static void populateStudents() {
         for (int i = 0; i < 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
@@ -59,9 +60,9 @@ public class Main {
     } // DONE
     public static void populateStudentSchedules() {
         for (int student_id = 0; student_id < students.length; student_id++) {
-            for (int period = 0; period < 10; period++) {
-                System.out.println("INSERT INTO StudentSchedule (student_id, roster_id) VALUES (" +
-                        student_id + ", " + (int)(Math.random() * 600) + ");"); // Random roster 0-599( we said 600)
+            for (int period = 1; period < 11; period++) {
+                System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
+                        student_id + ", " + (int)(Math.random() * courseOfferingIDCount) + ");"); // Random roster 0-599( we said 600)    //call this after course offering id is called
             }
         }
     } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
@@ -184,6 +185,7 @@ public class Main {
                 blacklistArray.add(new blacklistedTeacherPeriodCombo(teacher_id, period));
                 room_index++;
                 course_offering_id++;
+                courseOfferingIDCount++;
             }
         }
 
@@ -234,12 +236,12 @@ public class Main {
         }
     }
 
-    public static void populateRoster() {
+    /*public static void populateRoster() {
         //used to be 150
         for (int i = 0; i < 600; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
-    } // NEEDS PROPER VALUES
+    } // NEEDS PROPER VALUES*/
 
     //---------------------UTILITY METHODS GO BELOW THIS LINE---------------------------------\\
 
