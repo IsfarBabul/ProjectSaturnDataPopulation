@@ -194,19 +194,15 @@ public class Main {
         int num_of_course_offerings = (int)(Math.random() * 5) + 1;
         
         for (int j = 0; j < num_of_course_offerings; j++) {
-            int period = (int)(Math.random() * 10) + 1;
-            while (periodCounts[period-1] >= 60) {
-                period = (int)(Math.random() * 10) + 1;
-            }
-            periodCounts[period-1]++;
+            int period = getValidPeriod(periodCounts);
+            int teacher_id = getValidTeacher(teacherAssignments);
             
-            int teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-            while (teacherAssignments[teacher_id] >= 5) {
-                teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-            }
+            periodCounts[period-1]++;
             teacherAssignments[teacher_id]++;
             
-            System.out.println("INSERT INTO CourseOffering (course_offering_id, course_offering_room, course_id, teacher_id, period) VALUES (" + course_offering_id + ", '" + allRoomNumbers.get(room_index) + "', " + course_id + ", " + teacher_id + ", " + period + ");");
+            System.out.println("INSERT INTO CourseOffering VALUES (" + 
+                course_offering_id + ", '" + allRoomNumbers.get(room_index) + 
+                "', " + course_id + ", " + teacher_id + ", " + period + ");");
             
             room_index++;
             course_offering_id++;
@@ -214,7 +210,34 @@ public class Main {
     }
 }
 
+private static int getValidPeriod(int[] periodCounts) {
+    int period;
+    while (true) {
+        period = (int)(Math.random() * 10) + 1;
+        if (periodCounts[period-1] < 60) {
+            return period;
+        }
+    }
+}
 
+private static int getValidTeacher(int[] teacherAssignments) {
+    int teacher_id;
+    while (true) {
+        teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+        if (teacherAssignments[teacher_id] < 5) {
+            return teacher_id;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+    
     
     public static void populateRoster() {
         for (int i = 0; i < 150; i++) {
