@@ -48,13 +48,23 @@ public class Main {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
     }
+    // public static void populateStudentSchedules() {
+    //     for (int i = 0; i < students.length; i++) {    //5000 students
+    //         for (int j = 0; j < 10; j++) {   //each have 10 courses
+    //             System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
+    //         }
+    //     }
+    // }
+
     public static void populateStudentSchedules() {
-        for (int i = 0; i < students.length; i++) {    //5000 students
-            for (int j = 0; j < 10; j++) {   //each have 10 courses
-                System.out.println("INSERT INTO StudentSchedule ( student_id, roster_id ) VALUES ( " + (i + 1) + " )"); //TODO: ROSTER ID REQUIRED
-            }
+    for (int student_id = 1; student_id <= 5000; student_id++) {
+        for (int period = 1; period <= 10; period++) {
+            System.out.println("INSERT INTO StudentSchedule (student_id, roster_id) VALUES (" + 
+                student_id + ", " + (int)(Math.random() * 600) + ");"); // Random roster 0-599( we said 600)
         }
     }
+}
+    
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
@@ -237,7 +247,9 @@ private static int getValidTeacher(int[] teacherAssignments) {
     
     
     public static void populateRoster() {
-        for (int i = 0; i < 150; i++) {
+
+        //used to be 150
+        for (int i = 0; i < 600; i++) {
             System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
         }
     }
