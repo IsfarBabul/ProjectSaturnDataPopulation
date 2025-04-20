@@ -18,20 +18,44 @@ public class Main {
         }
     }
 
+    // public static void populateAssignments() {
+    //     int assignmentCount = 1;
+    //     for (int i = 0; i < 5; i++) {      //number of course offerings; 5 is an example
+    //         for (int j = 1; j <= 12; j++) {    //three assignment types
+    //             System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MinorAssignment" + (assignmentCount) + "', " + 1 + ", " + i + " );");
+    //             assignmentCount++;
+    //         }
+    //         for (int j = 1; j <= 3; j++) {    //three assignment types
+    //             System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MajorAssignment" + (assignmentCount) + "', " + 2 + ", " + i + " );");
+    //             assignmentCount++;
+    //         }
+    //         assignmentCount++;
+    //     }
+    // }
+
     public static void populateAssignments() {
-        int assignmentCount = 1;
-        for (int i = 0; i < 5; i++) {      //number of course offerings; 5 is an example
-            for (int j = 1; j <= 12; j++) {    //three assignment types
-                System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MinorAssignment" + (assignmentCount) + "', " + 1 + ", " + i + " );");
-                assignmentCount++;
-            }
-            for (int j = 1; j <= 3; j++) {    //three assignment types
-                System.out.println("INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES ( " + (assignmentCount) + ", 'MajorAssignment" + (assignmentCount) + "', " + 2 + ", " + i + " );");
-                assignmentCount++;
-            }
-            assignmentCount++;
+    int assignment_id = 0;
+    // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
+    for (int offering_id = 0; offering_id < 600; offering_id++) {
+        for (int j = 1; j <= 12; j++) {
+            System.out.println(
+                "INSERT INTO Assignments VALUES (" + 
+                assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
+            );
+            assignment_id++;
+        }
+        for (int j = 1; j <= 3; j++) {
+            System.out.println(
+                "INSERT INTO Assignments VALUES (" + 
+                assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
+            );
+            assignment_id++;
         }
     }
+}
+
+
+    
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
@@ -43,6 +67,22 @@ public class Main {
             }
         }
     }
+
+//     public static void populateAssignmentGrades() {
+//     // 5000 students × 10 courses × 15 assignments = 750,000 grades
+//     for (int student_id = 1; student_id <= 5000; student_id++) {
+//         for (int assignment_id = 0; assignment_id < 9000; assignment_id++) {
+//             int grade = 75 + (int)(Math.random() * 26); // 75-100
+//             System.out.println(
+//                 "INSERT INTO AssignmentGrade VALUES (" + 
+//                 student_id + ", " + grade + ", " + assignment_id + ");"
+//             );
+//         }
+//     }
+// }
+
+
+    
     public static void populateStudents() {
         for (int i = 0; i < 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
