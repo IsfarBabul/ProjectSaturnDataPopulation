@@ -1,4 +1,3 @@
-public class Student {
-    public int id;
+public class Student extends Referencable {
     public String name;
 }

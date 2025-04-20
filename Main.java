@@ -8,6 +8,8 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
+    private static final ArrayList<Assignments> assignments = new ArrayList<>();
+
     private static int teacherCountForCourseOfferings = 0;
     private static int courseOfferingIDCount = 0;
 
@@ -39,9 +41,6 @@ public class Main {
             }
         }
     } // DONE
-
-
-
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
