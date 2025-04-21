@@ -33,7 +33,7 @@ public class Main {
         populateCourseTypes();
     
         // Step 2: Teachers (this sets teacherCountForCourseOfferings)
-        ArrayList<String> teacherFileData = getFileData("Teachers.txt"); 
+        ArrayList<String> teacherFileData = getFileData("Teachers.txt");
         populateTeachers(teacherFileData);
     
         // Step 3: Courses made
@@ -105,16 +105,6 @@ public class Main {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
     } // DONE
-    // public static void populateStudentSchedules() {
-    //     for (int student_id = 0; student_id < students.length; student_id++) {
-    //         for (int period = 1; period < 11; period++) {
-    //             System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
-    //                     student_id + ", " + (int)(Math.random() * courseOfferingIDCount) + ");"); // Random roster 0-599( we said 600)    //call this after course offering id is called
-    //         }
-    //     }
-    // } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
-
-
     //NEW STUFF BY MASROOR
     public static void populateStudentSchedules() {
         for (int student_id = 0; student_id < students.length; student_id++) {
@@ -129,6 +119,13 @@ public class Main {
             }
         }
     }
+
+
+    public static void populateDepartments() {
+        for (int i = 0; i < departments.length; i++) {
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
+        }
+    } // DONE
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -152,26 +149,39 @@ public class Main {
             teacherCountForCourseOfferings++; // Increment counter
         }
 
-        // Print the total count
-        System.out.println("\n-- Total teachers : " + teacherCountForCourseOfferings++);
     } // DONE (PROBABLY)
+
+
     public static void populateCourses() {
+        // Read courses from the file
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
 
-
+        // Create a 2D ArrayList to hold the parsed subjects and their courses
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
-        // populate parsedSubjects2DArray
+
+        // Populate parsedSubjects2DArray by splitting each line by '|'
         for (String parsedSubject : parsedSubjects) {
             String[] subjectLine = parsedSubject.split("\\|");
             parsedSubjects2DArray.add(subjectLine);
         }
 
-        //BELOW IS FOR PRINTING-----------------------------------------------
-        for (String[] strings : parsedSubjects2DArray) {
-            for (String string : strings) {
-                System.out.println(string);
+
+
+
+        int courseId = 0;  // start from 0
+
+        for (String[] subjectArray : parsedSubjects2DArray) {
+            String subjectName = subjectArray[0];  // The first index is the category name
+
+            // Loop through each course, skip the dept name
+            for (int i = 1; i < subjectArray.length; i++) {
+                String courseName = subjectArray[i];
+                int courseTypeId = getCourseTypeId(subjectName);  // Get course type based on category
+
+                // Print the INSERT statement
+                System.out.println("INSERT INTO Courses (course_id, course_name, course_type_id) VALUES ("
+                        + courseId++ + ", '" + courseName + "', " + courseTypeId + ");");
             }
-            System.out.println();
         }
         //ABOVE IS FOR PRINTING---------------------------------------------
 
@@ -191,13 +201,11 @@ public class Main {
         String[] room_wings = {"N", "E", "S", "W"};
         String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
         ArrayList<String> allRoomNumbers = new ArrayList<>();
+
         for (String floor_number : floor_numbers) {
             for (String room_wing : room_wings) {
                 for (int i = 1; i < 21; i++) {
-                    String zeroPad = "";
-                    if (i < 10) {
-                        zeroPad = "0";
-                    }
+                    String zeroPad = (i < 10) ? "0" : "";
                     allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
                 }
             }
@@ -218,109 +226,55 @@ public class Main {
 
         ArrayList<blacklistedTeacherPeriodCombo> blacklistArray = new ArrayList<>();
 
-        for (int i = 0; i < 120; i++) { // SHOULD BE LENGTH OF COURSES ARRAY
+        for (int i = 0; i < 120; i++) { // # of courses
             int num_of_course_offerings = (int) (Math.random() * 5) + 1;
             for (int j = 0; j < num_of_course_offerings; j++) {
+
                 int teacher_id = -1;
                 int period = -1;
-                boolean isBlacklisted = false;
+                boolean isBlacklisted;
+                int attempts = 0;
+
+                // try to find a non-blacklisted teacher/period combo
                 do {
-                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings);    //WARNING: populateTeachers() method must be called before this method
+                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings);
                     period = (int) (Math.random() * 10) + 1;
 
-                    //NEW STUFF BY MASROOR
-                    courseOfferingsByPeriod[period - 1].add(course_offering_id);
-
-
-
-
+                    isBlacklisted = false;
                     for (blacklistedTeacherPeriodCombo combo : blacklistArray) {
                         if (teacher_id == combo.teacher_id && period == combo.period) {
                             isBlacklisted = true;
                             break;
                         }
                     }
+
+                    attempts++;
+                    if (attempts > 1000) {
+                        // too many tries, skip this offering
+                        System.out.println("-- Skipping offering " + course_offering_id + " due to blacklist");
+                        break;
+                    }
+
                 } while (isBlacklisted);
 
-                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " + course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )");
+                if (attempts > 1000) {
+                    continue; // skip if no valid combo found
+                }
+
                 blacklistArray.add(new blacklistedTeacherPeriodCombo(teacher_id, period));
+                courseOfferingsByPeriod[period - 1].add(course_offering_id); // used for student schedule
+
+                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " +
+                        course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )");
+
                 room_index++;
                 course_offering_id++;
                 courseOfferingIDCount++;
             }
         }
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-        //---------------------------
-        //BELOW IS UNUSED CODE
-
-        // Masroor's Code
-//        int[] periodCounts = new int[10];
-//        int[] teacherAssignments = new int[teacherCountForCourseOfferings];
-//        int room_index = 0;
-//
-//        for (int course_id = 0; course_id < 120; course_id++) {
-//            int num_of_course_offerings = (int)(Math.random() * 5) + 1;
-//
-//            for (int j = 0; j < num_of_course_offerings; j++) {
-//                int period = getValidPeriod(periodCounts);
-//                int teacher_id = getValidTeacher(teacherAssignments);
-//
-//                periodCounts[period-1]++;
-//                teacherAssignments[teacher_id]++;
-//
-//                System.out.println("INSERT INTO CourseOffering VALUES (" +
-//                        course_offering_id + ", '" + allRoomNumbers.get(room_index) +
-//                        "', " + course_id + ", " + teacher_id + ", " + period + ");");
-//
-//                room_index++;
-//                course_offering_id++;
-//            }
-//        }
-
-    } // DONE
-
-
-
-
-
-//
-//    private static int getValidPeriod(int[] periodCounts) {
-//        int period;
-//        while (true) {
-//            period = (int)(Math.random() * 10) + 1;
-//            if (periodCounts[period-1] < 60) {
-//                return period;
-//            }
-//        }
-//    }
-//
-//    private static int getValidTeacher(int[] teacherAssignments) {
-//        int teacher_id;
-//        while (true) {
-//            teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-//            if (teacherAssignments[teacher_id] < 5) {
-//                return teacher_id;
-//            }
-//        }
-//    }
-
-    /*public static void populateRoster() {
-        //used to be 150
-        for (int i = 0; i < 600; i++) {
-            System.out.println("INSERT INTO Rosters ( roster_id, course_offering_id ) VALUES ( " + i + ", " + i + " )");      //each roster id gets its own course offering id
-        }
-    } // NEEDS PROPER VALUES*/
 
     //---------------------UTILITY METHODS GO BELOW THIS LINE---------------------------------\\
 
