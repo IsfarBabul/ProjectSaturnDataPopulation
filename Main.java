@@ -77,7 +77,7 @@ public class Main {
     // } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
 
 
-    // NEW STUFF BY MASROOR
+    //NEW STUFF BY MASROOR
         public static void populateStudentSchedules() {
         for (int student_id = 0; student_id < students.length; student_id++) {
             for (int period = 0; period < 10; period++) {
