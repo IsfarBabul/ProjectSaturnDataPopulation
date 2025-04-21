@@ -10,6 +10,10 @@ public class Main {
 
     private static final ArrayList<Assignments> assignments = new ArrayList<>();
 
+     //NEW STUFF BY MASROOR
+    private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
+
+
     private static int teacherCountForCourseOfferings = 0;
     private static int courseOfferingIDCount = 0;
 
@@ -19,6 +23,12 @@ public class Main {
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
         }
+
+        //NEW STUFF BY MASROOR
+        for (int i = 0; i < 10; i++) {
+            courseOfferingsByPeriod[i] = new ArrayList<>();
+        }
+
     }
 
     public static void populateAssignments() {
@@ -57,15 +67,34 @@ public class Main {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
     } // DONE
-    public static void populateStudentSchedules() {
+    // public static void populateStudentSchedules() {
+    //     for (int student_id = 0; student_id < students.length; student_id++) {
+    //         for (int period = 1; period < 11; period++) {
+    //             System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
+    //                     student_id + ", " + (int)(Math.random() * courseOfferingIDCount) + ");"); // Random roster 0-599( we said 600)    //call this after course offering id is called
+    //         }
+    //     }
+    // } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
+
+
+    // NEW STUFF BY MASROOR
+        public static void populateStudentSchedules() {
         for (int student_id = 0; student_id < students.length; student_id++) {
-            for (int period = 1; period < 11; period++) {
-                System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
-                        student_id + ", " + (int)(Math.random() * courseOfferingIDCount) + ");"); // Random roster 0-599( we said 600)    //call this after course offering id is called
+            for (int period = 0; period < 10; period++) {
+                ArrayList<Integer> offerings = courseOfferingsByPeriod[period];
+                if (!offerings.isEmpty()) {
+                    int randomIndex = (int)(Math.random() * offerings.size());
+                    int course_offering_id = offerings.get(randomIndex);
+                    System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
+                            student_id + ", " + course_offering_id + ");");
+                }
             }
         }
-    } // NEED PROPER IDS FOR STUDENT_ID AND ROSTER_ID
+    }
 
+
+
+    
 
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
@@ -172,6 +201,13 @@ public class Main {
                 do {
                     teacher_id = (int) (Math.random() * teacherCountForCourseOfferings);    //WARNING: populateTeachers() method must be called before this method
                     period = (int) (Math.random() * 10) + 1;
+
+                    //NEW STUFF BY MASROOR
+                    courseOfferingsByPeriod[period - 1].add(course_offering_id);
+
+
+
+                    
                     for (blacklistedTeacherPeriodCombo combo : blacklistArray) {
                         if (teacher_id == combo.teacher_id && period == combo.period) {
                             isBlacklisted = true;
