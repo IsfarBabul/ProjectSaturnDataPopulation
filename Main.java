@@ -8,7 +8,7 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
-    private static final ArrayList<Assignments> assignments = new ArrayList<>();
+   
 
      //NEW STUFF BY MASROOR
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
