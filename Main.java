@@ -18,19 +18,47 @@ public class Main {
     private static int courseOfferingIDCount = 0;
 
 
-    
+        
     public static void main(String[] args) {
+        // Step 0: Setup teacher array and courseOfferingsByPeriod
         for (int i = 0; i < 200; i++) {
             teachers[i] = new Teacher();
         }
-
-        //NEW STUFF BY MASROOR
         for (int i = 0; i < 10; i++) {
             courseOfferingsByPeriod[i] = new ArrayList<>();
         }
-
+    
+        // Step 1: Setup database-independent constants
+        populateDepartments();
+        populateCourseTypes();
+    
+        // Step 2: Teachers (this sets teacherCountForCourseOfferings)
+        ArrayList<String> teacherFileData = getFileData("Teachers.txt"); 
+        populateTeachers(teacherFileData);
+    
+        // Step 3: Courses made
+        populateCourses();
+    
+        // Step 4: Course Offerings (sets up  courseOfferingIDCount, fills  up the courseOfferingsByPeriod[])
+        populateCourseOfferings();
+    
+        // Step 5: Students made
+        populateStudents();
+    
+        // Step 6: Assign people to course offerings (uses courseOfferingsByPeriod[])
+        populateStudentSchedules();
+    
+        // Step 7: Assignment Types ( define stuff )
+        populateAssignmentTypes();
+    
+        // Step 8: Assignments ( generate 15 per offering)
+        populateAssignments();
+    
+        // Step 9: Grades 
+    
+        populateAssignmentGrades();
     }
-
+    
     public static void populateAssignments() {
         int assignment_id = 0;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
