@@ -191,6 +191,9 @@ public class Main {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
     } // DONE
+
+
+
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
         String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
@@ -237,7 +240,7 @@ public class Main {
 
 
 
-                    
+
                     for (blacklistedTeacherPeriodCombo combo : blacklistArray) {
                         if (teacher_id == combo.teacher_id && period == combo.period) {
                             isBlacklisted = true;
@@ -254,6 +257,19 @@ public class Main {
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
+        //---------------------------
+        //BELOW IS UNUSED CODE
 
         // Masroor's Code
 //        int[] periodCounts = new int[10];
@@ -281,25 +297,30 @@ public class Main {
 
     } // DONE
 
-    private static int getValidPeriod(int[] periodCounts) {
-        int period;
-        while (true) {
-            period = (int)(Math.random() * 10) + 1;
-            if (periodCounts[period-1] < 60) {
-                return period;
-            }
-        }
-    }
 
-    private static int getValidTeacher(int[] teacherAssignments) {
-        int teacher_id;
-        while (true) {
-            teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
-            if (teacherAssignments[teacher_id] < 5) {
-                return teacher_id;
-            }
-        }
-    }
+
+
+
+//
+//    private static int getValidPeriod(int[] periodCounts) {
+//        int period;
+//        while (true) {
+//            period = (int)(Math.random() * 10) + 1;
+//            if (periodCounts[period-1] < 60) {
+//                return period;
+//            }
+//        }
+//    }
+//
+//    private static int getValidTeacher(int[] teacherAssignments) {
+//        int teacher_id;
+//        while (true) {
+//            teacher_id = (int)(Math.random() * teacherCountForCourseOfferings);
+//            if (teacherAssignments[teacher_id] < 5) {
+//                return teacher_id;
+//            }
+//        }
+//    }
 
     /*public static void populateRoster() {
         //used to be 150
