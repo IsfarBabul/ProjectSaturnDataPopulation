@@ -119,13 +119,6 @@ public class Main {
             }
         }
     }
-
-
-    public static void populateDepartments() {
-        for (int i = 0; i < departments.length; i++) {
-            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
-        }
-    } // DONE
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -150,8 +143,6 @@ public class Main {
         }
 
     } // DONE (PROBABLY)
-
-
     public static void populateCourses() {
         // Read courses from the file
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
@@ -176,11 +167,11 @@ public class Main {
             // Loop through each course, skip the dept name
             for (int i = 1; i < subjectArray.length; i++) {
                 String courseName = subjectArray[i];
-                int courseTypeId = getCourseTypeId(subjectName);  // Get course type based on category
-
-                // Print the INSERT statement
-                System.out.println("INSERT INTO Courses (course_id, course_name, course_type_id) VALUES ("
-                        + courseId++ + ", '" + courseName + "', " + courseTypeId + ");");
+//                int courseTypeId = getCourseTypeId(subjectName);  // Get course type based on category
+//
+//                // Print the INSERT statement
+//                System.out.println("INSERT INTO Courses (course_id, course_name, course_type_id) VALUES ("
+//                        + courseId++ + ", '" + courseName + "', " + courseTypeId + ");");
             }
         }
         //ABOVE IS FOR PRINTING---------------------------------------------
@@ -196,7 +187,6 @@ public class Main {
             System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + i + ", " + course_name + ", " + course_type_id + " )");
         }
     } // DONE
-
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
         String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
