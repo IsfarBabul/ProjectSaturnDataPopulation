@@ -54,11 +54,21 @@ public class Main {
         // Step 8: Assignments ( generate 15 per offering)
         populateAssignments();
     
-        // Step 9: Grades 
-    
+        // Step 9: Grades
         populateAssignmentGrades();
     }
-    
+
+
+    public static void populateDepartments() {
+        for (int i = 0; i < departments.length; i++) {
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
+        }
+    } // DONE
+    public static void populateCourseTypes() {
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+    } // DONE
     public static void populateAssignments() {
         int assignment_id = 0;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
@@ -106,7 +116,7 @@ public class Main {
 
 
     //NEW STUFF BY MASROOR
-        public static void populateStudentSchedules() {
+    public static void populateStudentSchedules() {
         for (int student_id = 0; student_id < students.length; student_id++) {
             for (int period = 0; period < 10; period++) {
                 ArrayList<Integer> offerings = courseOfferingsByPeriod[period];
@@ -119,16 +129,6 @@ public class Main {
             }
         }
     }
-
-
-
-    
-
-    public static void populateDepartments() {
-        for (int i = 0; i < departments.length; i++) {
-            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
-        }
-    } // DONE
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -186,13 +186,6 @@ public class Main {
             System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + i + ", " + course_name + ", " + course_type_id + " )");
         }
     } // DONE
-    public static void populateCourseTypes() {
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
-    } // DONE
-
-
 
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
