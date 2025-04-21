@@ -29,45 +29,45 @@ public class Main {
         }
     
         // Step 1: Setup database-independent constants
-        populateDepartments();
-        populateCourseTypes();
+        //populateDepartments();
+        //populateCourseTypes();
     
         // Step 2: Teachers (this sets teacherCountForCourseOfferings)
         ArrayList<String> teacherFileData = getFileData("Teachers.txt");
-        populateTeachers(teacherFileData);
+        //populateTeachers(teacherFileData);
     
         // Step 3: Courses made
-        populateCourses();
+        //populateCourses();
     
         // Step 4: Course Offerings (sets up  courseOfferingIDCount, fills  up the courseOfferingsByPeriod[])
-        populateCourseOfferings();
+        //populateCourseOfferings();   //ON HOLD
     
         // Step 5: Students made
-        populateStudents();
+        //populateStudents();
     
         // Step 6: Assign people to course offerings (uses courseOfferingsByPeriod[])
-        populateStudentSchedules();
+        //populateStudentSchedules();
     
         // Step 7: Assignment Types ( define stuff )
-        populateAssignmentTypes();
+        //populateAssignmentTypes();
     
         // Step 8: Assignments ( generate 15 per offering)
-        populateAssignments();
+        //populateAssignments();
     
         // Step 9: Grades
-        populateAssignmentGrades();
+        //populateAssignmentGrades();
     }
 
 
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
-            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " )");
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " );");
         }
     } // DONE
     public static void populateCourseTypes() {
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' )");
-        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' )");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' );");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' );");
+        System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' );");
     } // DONE
     public static void populateAssignments() {
         int assignment_id = 0;
@@ -90,8 +90,8 @@ public class Main {
         }
     } // DONE
     public static void populateAssignmentTypes() {
-        System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' )");
-        System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' )");
+        System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' );");
+        System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
     } // DONE
     public static void populateAssignmentGrades() {
         for (int i = 0; i < 5000; i++) { //each student gets assignments
@@ -175,7 +175,7 @@ public class Main {
         }
         //ABOVE IS FOR PRINTING---------------------------------------------
 
-        for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
+        /*for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
             String course_name = parsedSubjects2DArray.get(i)[1];
             int course_type_id = 1;
             if (course_name.contains("Regents")) {       // contains() is appropriate because we could have regents courses called "Regents Physics" or "10th Grade Regents Global History"
@@ -183,8 +183,8 @@ public class Main {
             } else if (course_name.startsWith("AP")) {   // startWith() is appropriate to include AP courses like "AP Computer Science A" but to exclude courses such as "Spanish IV - Pre-AP"
                 course_type_id = 3;
             }
-            System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + i + ", " + course_name + ", " + course_type_id + " )");
-        }
+            System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + i + ", " + course_name + ", " + course_type_id + " );");
+        }*/
     } // DONE
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
@@ -240,21 +240,21 @@ public class Main {
                     attempts++;
                     if (attempts > 1000) {
                         // too many tries, skip this offering
-                        System.out.println("-- Skipping offering " + course_offering_id + " due to blacklist");
+                        //System.out.println("-- Skipping offering " + course_offering_id + " due to blacklist");
                         break;
                     }
 
                 } while (isBlacklisted);
 
-                if (attempts > 1000) {
+                /*if (attempts > 1000) {
                     continue; // skip if no valid combo found
-                }
+                }*/
 
                 blacklistArray.add(new blacklistedTeacherPeriodCombo(teacher_id, period));
                 courseOfferingsByPeriod[period - 1].add(course_offering_id); // used for student schedule
 
                 System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " +
-                        course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " )");
+                        course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " );");
 
                 room_index++;
                 course_offering_id++;
