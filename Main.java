@@ -55,7 +55,7 @@ public class Main {
         //populateAssignments();
     
         // Step 9: Grades
-        //populateAssignmentGrades();
+        populateAssignmentGrades();
     }
 
 
@@ -93,13 +93,30 @@ public class Main {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' );");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
     } // DONE
+
+
     public static void populateAssignmentGrades() {
-        for (int i = 0; i < 5000; i++) { //each student gets assignments
-            for (int j = 0; j < 15; j++) {     //number of assignments
-                System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( " + i + ", '" + (int) ((Math.random() * 26) + 75) + "', " + j + " );");
+        for (int student_id = 0; student_id < 5000; student_id++) {
+            int assignment_id = 0;
+            for (int course = 0; course < 10; course++) {
+                for (int assignment = 0; assignment < 15; assignment++) {
+                    // Generate a random grade between 75 and 100
+                    int grade = (int) ((Math.random() * 26) + 75);
+
+                    // Insert into the database, with a unique assignment_id per course
+                    System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
+                            + student_id + ", '" + grade + "', " + assignment_id + " );");
+
+                    // Increment the assignment_id for each assignment per course
+                    assignment_id++;
+                }
             }
         }
-    } // NEEDS PROPER VALUES FOR STUDENT_ID - AIVIN       Assignment_Id has some issue where its only being populated with numbers 1 to 15 so only assignments from the very first course offering are being represented - Isfar
+    }
+
+
+
+    // NEEDS PROPER VALUES FOR STUDENT_ID - AIVIN       Assignment_Id has some issue where its only being populated with numbers 1 to 15 so only assignments from the very first course offering are being represented - Isfar
     public static void populateStudents() {
         for (int i = 0; i < 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
