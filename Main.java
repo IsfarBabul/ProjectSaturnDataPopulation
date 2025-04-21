@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static final Teacher[] teachers = new Teacher[200];
+    private static final Teacher[] teachers = new Teacher[548];
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
 
@@ -136,7 +136,9 @@ public class Main {
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
-            teachers[i] = new Teacher();
+
+            //COMMENTED THIS CAUSE THIS WAS CAUSING ISSUES
+            //teachers[i] = new Teacher();
 
             String teacherFirstName = teacherNameSplit[0];
             String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
