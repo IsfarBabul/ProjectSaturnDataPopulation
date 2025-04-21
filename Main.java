@@ -96,18 +96,18 @@ public class Main {
 
 
     public static void populateAssignmentGrades() {
+        int assignment_id = 0; // Initialize assignment_id once
         for (int student_id = 0; student_id < 5000; student_id++) {
-            int assignment_id = 0;
             for (int course = 0; course < 10; course++) {
                 for (int assignment = 0; assignment < 15; assignment++) {
                     // Generate a random grade between 75 and 100
                     int grade = (int) ((Math.random() * 26) + 75);
 
-                    // Insert into the database, with a unique assignment_id per course
+                    // Insert  with a unique assignment_id
                     System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
                             + student_id + ", '" + grade + "', " + assignment_id + " );");
 
-                    // Increment the assignment_id for each assignment per course
+                    // Increment the assignment_id for each assignment (across all students)
                     assignment_id++;
                 }
             }
