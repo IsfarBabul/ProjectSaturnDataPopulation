@@ -5,20 +5,14 @@ import java.util.Scanner;
 
 
 public class Main {
-    private static final Teacher[] teachers = new Teacher[548];
+    private static final Teacher[] teachers = new Teacher[580];
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
-    //NEW STUFF BY MASROOR
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
-
     private static int teacherCountForCourseOfferings = 0;
     private static int courseOfferingIDCount = 0;
     private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
     private static ArrayList<ArrayList<Integer>> allAssignmentsPerCourseOffering = new ArrayList<>();
-
-
-
-
 
     public static void main(String[] args) {
         // Step 0: Setup teacher array and courseOfferingsByPeriod
@@ -102,16 +96,13 @@ public class Main {
     public static void populateCourses() {
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
 
-
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
         for (String parsedSubject : parsedSubjects) {
             String[] subjectLine = parsedSubject.split("\\|");
             parsedSubjects2DArray.add(subjectLine);
         }
 
-
         int courseId = 0;
-
 
         for (String[] subjectArray : parsedSubjects2DArray) {
             // subjectArray[0] is the dept
@@ -119,36 +110,18 @@ public class Main {
                 String courseName = subjectArray[i];
                 int courseTypeId = 1; // Default to Elective
 
-
                 if (courseName.contains("Regents")) {
                     courseTypeId = 2; // Regents
                 } else if (courseName.startsWith("AP")) {
                     courseTypeId = 3; // AP
                 }
 
-
-
-
                 System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( "
                         + courseId + ", '" + courseName + "', " + courseTypeId + " );");
-
 
                 courseId++;
             }
         }
-        //ABOVE IS FOR PRINTING---------------------------------------------
-
-
-       /*for (int i = 0; i < parsedSubjects2DArray.size(); i++) {
-           String course_name = parsedSubjects2DArray.get(i)[1];
-           int course_type_id = 1;
-           if (course_name.contains("Regents")) {       // contains() is appropriate because we could have regents courses called "Regents Physics" or "10th Grade Regents Global History"
-               course_type_id = 2;
-           } else if (course_name.startsWith("AP")) {   // startWith() is appropriate to include AP courses like "AP Computer Science A" but to exclude courses such as "Spanish IV - Pre-AP"
-               course_type_id = 3;
-           }
-           System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( " + i + ", " + course_name + ", " + course_type_id + " );");
-       }*/
     } // DONE
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
