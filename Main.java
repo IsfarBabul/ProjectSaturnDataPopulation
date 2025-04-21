@@ -143,34 +143,33 @@ public class Main {
 
 
     public static void populateCourses() {
-        // Read courses from the file
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
 
-        // Create a 2D ArrayList to hold the parsed subjects and their courses
         ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
-
-        // Populate parsedSubjects2DArray by splitting each line by '|'
         for (String parsedSubject : parsedSubjects) {
             String[] subjectLine = parsedSubject.split("\\|");
             parsedSubjects2DArray.add(subjectLine);
         }
 
-
-
-
-        int courseId = 0;  // start from 0
+        int courseId = 0;
 
         for (String[] subjectArray : parsedSubjects2DArray) {
-            String subjectName = subjectArray[0];  // The first index is the category name
-
-            // Loop through each course, skip the dept name
+            // subjectArray[0] is the dept
             for (int i = 1; i < subjectArray.length; i++) {
                 String courseName = subjectArray[i];
-                int courseTypeId = getCourseTypeId(subjectName);  // Get course type based on category
+                int courseTypeId = 1; // Default to Elective
 
-                // Print the INSERT statement
-                System.out.println("INSERT INTO Courses (course_id, course_name, course_type_id) VALUES ("
-                        + courseId++ + ", '" + courseName + "', " + courseTypeId + ");");
+                if (courseName.contains("Regents")) {
+                    courseTypeId = 2; // Regents
+                } else if (courseName.startsWith("AP")) {
+                    courseTypeId = 3; // AP
+                }
+
+
+                System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( "
+                        + courseId + ", '" + courseName + "', " + courseTypeId + " );");
+
+                courseId++;
             }
         }
     }
