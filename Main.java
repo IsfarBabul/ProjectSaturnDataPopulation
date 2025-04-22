@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
     private static final Teacher[] teachers = new Teacher[580];
     private static final Student[] students = new Student[5000];
-    private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts"};
+    private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
     private static int courseOfferingIDCount = 0;
     private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
@@ -63,21 +63,35 @@ public class Main {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
 
-
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
             String teacherFirstName = teacherNameSplit[0];
             String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
-            String departmentId = (i < departmentNames.length) ? departmentNames[i].trim() : "NULL";
 
             teachers[i] = new Teacher(teacherFirstName, teacherLastName);
+            String deptName = (i < departmentNames.length) ? departmentNames[i].trim() : "";
+            int deptId = getDepartmentId(deptName);
+
+            String departmentIdValue = (deptId == -1) ? "NULL" : String.valueOf(deptId);
+
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" +
+                    (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " +
+                    departmentIdValue + ");");
 
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " + departmentId + ");");
         }
 
 
     } // NEEDS PROPER DEPARTMENT IDS
+    private static int getDepartmentId(String name) {
+        for (int i = 0; i < departments.length; i++) {
+            if (departments[i].equalsIgnoreCase(name)) {
+                return i + 1; // 1-based ID
+            }
+        }
+        return 11; // Not found
+    }
     public static void populateCourses() {
         ArrayList<String> parsedSubjects = getFileData("Courses.txt");
 
@@ -237,7 +251,6 @@ public class Main {
             allAssignmentsPerCourseOffering.add(assignment_ids);
         }
     } // DONE
-
     public static void populateAssignmentGrades() {
         for (int student_id = 0; student_id < 5000; student_id++) {  //5000 students
             ArrayList<Integer> student_course_offering_ids = allCourseOfferingsPerStudent.get(student_id);
