@@ -66,20 +66,16 @@ public class Main {
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
+            int id = i + 1;
             String teacherFirstName = teacherNameSplit[0];
             String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
-
-            teachers[i] = new Teacher(teacherFirstName, teacherLastName);
             String deptName = (i < departmentNames.length) ? departmentNames[i].trim() : "";
             int deptId = getDepartmentId(deptName);
 
-            String departmentIdValue = (deptId == -1) ? "NULL" : String.valueOf(deptId);
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " + departmentIdValue + ");");
+            teachers[i] = new Teacher(id, teacherFirstName, teacherLastName, deptId);
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + id + ", '" + teacherFirstName + " " + teacherLastName + "', " + deptId + ");");
         }
-
-
-    } // NEEDS PROPER DEPARTMENT IDS
+    } // DONE
     private static int getDepartmentId(String name) {
         for (int i = 0; i < departments.length; i++) {
             if (departments[i].equalsIgnoreCase(name)) {
@@ -103,8 +99,8 @@ public class Main {
             // subjectArray[0] is the dept
             for (int i = 1; i < subjectArray.length; i++) {
                 String courseName = subjectArray[i];
-                int courseTypeId = 1; // Default to Elective
 
+                int courseTypeId = 1; // Default to Elective
                 if (courseName.contains("Regents")) {
                     courseTypeId = 2; // Regents
                 } else if (courseName.startsWith("AP")) {

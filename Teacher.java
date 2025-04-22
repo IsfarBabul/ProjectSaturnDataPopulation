@@ -3,9 +3,10 @@ public class Teacher extends Referencable{
     public String lastName;
     public int departmentId;
 
-    public Teacher(String firstName, String lastName) {
+    public Teacher(int id, String firstName, String lastName, int departmentId) {
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
-//        this.departmentId = departmentId;
+        this.departmentId = departmentId;
     }
 }
