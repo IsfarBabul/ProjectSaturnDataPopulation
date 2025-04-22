@@ -9,16 +9,12 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
-    private static int teacherCountForCourseOfferings = 580;
     private static int courseOfferingIDCount = 0;
     private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
     private static ArrayList<ArrayList<Integer>> allAssignmentsPerCourseOffering = new ArrayList<>();
 
     public static void main(String[] args) {
         // Step 0: Setup teacher array and courseOfferingsByPeriod
-        for (int i = 0; i < 200; i++) {
-            teachers[i] = new Teacher();
-        }
         for (int i = 0; i < 10; i++) {
             courseOfferingsByPeriod[i] = new ArrayList<>();
         }
@@ -53,9 +49,6 @@ public class Main {
         populateAssignmentGrades();
     }
 
-
-
-
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " );");
@@ -72,20 +65,17 @@ public class Main {
 
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
+
+            int id = i + 1;
             String teacherFirstName = teacherNameSplit[0];
             String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
-
             String deptName = (i < departmentNames.length) ? departmentNames[i].trim() : "";
             int deptId = getDepartmentId(deptName);
 
-            String departmentIdValue = (deptId == -1) ? "NULL" : String.valueOf(deptId);
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" +
-                    (i +1) + ", '" + teacherFirstName + " " + teacherLastName + "', " +
-                    departmentIdValue + ");");
-
+            teachers[i] = new Teacher(id, teacherFirstName, teacherLastName, deptId);
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + id + ", '" + teacherFirstName + " " + teacherLastName + "', " + deptId + ");");
         }
-    }
+    } // DONE
     private static int getDepartmentId(String name) {
         for (int i = 0; i < departments.length; i++) {
             if (departments[i].equalsIgnoreCase(name)) {
@@ -109,8 +99,8 @@ public class Main {
             // subjectArray[0] is the dept
             for (int i = 1; i < subjectArray.length; i++) {
                 String courseName = subjectArray[i];
-                int courseTypeId = 1; // Default to Elective
 
+                int courseTypeId = 1; // Default to Elective
                 if (courseName.contains("Regents")) {
                     courseTypeId = 2; // Regents
                 } else if (courseName.startsWith("AP")) {
@@ -167,7 +157,7 @@ public class Main {
 
                 // try to find a non-blacklisted teacher/period combo
                 do {
-                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings)+1;
+                    teacher_id = (int) (Math.random() * teachers.length) + 1;
                     period = (int) (Math.random() * 10) + 1;
 
                     isBlacklisted = false;
