@@ -9,7 +9,7 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
-    private static int teacherCountForCourseOfferings = 0;
+    private static int teacherCountForCourseOfferings = 580;
     private static int courseOfferingIDCount = 0;
     private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
     private static ArrayList<ArrayList<Integer>> allAssignmentsPerCourseOffering = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Main {
             String departmentIdValue = (deptId == -1) ? "NULL" : String.valueOf(deptId);
 
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" +
-                    (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " +
+                    (i +1) + ", '" + teacherFirstName + " " + teacherLastName + "', " +
                     departmentIdValue + ");");
 
         }
@@ -103,7 +103,7 @@ public class Main {
             parsedSubjects2DArray.add(subjectLine);
         }
 
-        int courseId = 0;
+        int courseId = 1;
 
         for (String[] subjectArray : parsedSubjects2DArray) {
             // subjectArray[0] is the dept
@@ -124,6 +124,7 @@ public class Main {
             }
         }
     } // DONE
+
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
         String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
@@ -140,7 +141,7 @@ public class Main {
         }
 
         int room_index = 0;
-        int course_offering_id = 0;
+        int course_offering_id = 1;
 
         class blacklistedTeacherPeriodCombo {
             public int teacher_id;
@@ -155,18 +156,18 @@ public class Main {
 
         ArrayList<blacklistedTeacherPeriodCombo> blacklistArray = new ArrayList<>();
 
-        for (int i = 0; i < 120; i++) { // # of courses
+        for (int i = 1; i <= 120; i++) { // # of courses
             int num_of_course_offerings = (int) (Math.random() * 5) + 1;
             for (int j = 0; j < num_of_course_offerings; j++) {
 
-                int teacher_id = -1;
-                int period = -1;
+                int teacher_id;
+                int period;
                 boolean isBlacklisted;
                 int attempts = 0;
 
                 // try to find a non-blacklisted teacher/period combo
                 do {
-                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings);
+                    teacher_id = (int) (Math.random() * teacherCountForCourseOfferings)+1;
                     period = (int) (Math.random() * 10) + 1;
 
                     isBlacklisted = false;
@@ -210,7 +211,7 @@ public class Main {
         }
     } // DONE
     public static void populateStudentSchedules() {
-        for (int student_id = 0; student_id < students.length; student_id++) {
+        for (int student_id = 0; student_id <= students.length; student_id++) {
             ArrayList<Integer> course_offering_ids = new ArrayList<>();
             for (int period = 0; period < 10; period++) {
                 ArrayList<Integer> offerings = courseOfferingsByPeriod[period];
@@ -230,11 +231,11 @@ public class Main {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
     } // DONE
     public static void populateAssignments() {
-        int assignment_id = 0;
+        int assignment_id = 1;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
-        for (int offering_id = 0; offering_id < courseOfferingIDCount; offering_id++) {    //call this after course offering id is called
+        for (int offering_id = 1; offering_id <= courseOfferingIDCount; offering_id++) {    //call this after course offering id is called
             ArrayList<Integer> assignment_ids = new ArrayList<>();
-            for (int j = 0; j < 12; j++) {
+            for (int j = 1; j <= 12; j++) {
                 System.out.println(
                         "INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES (" +
                                 assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
@@ -242,7 +243,7 @@ public class Main {
                 assignment_ids.add(assignment_id);
                 assignment_id++;
             }
-            for (int j = 0; j < 3; j++) {
+            for (int j = 1; j <= 3; j++) {
                 System.out.println(
                         "INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES (" +
                                 assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
