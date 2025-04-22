@@ -75,11 +75,7 @@ public class Main {
 
             String departmentIdValue = (deptId == -1) ? "NULL" : String.valueOf(deptId);
 
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" +
-                    (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " +
-                    departmentIdValue + ");");
-
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " + departmentId + ");");
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " + departmentIdValue + ");");
         }
 
 
