@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -53,12 +54,12 @@ public class Main {
         for (int i = 0; i < departments.length; i++) {
             System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " );");
         }
-    } // DONE
+    } // DONE FLAWLESS
     public static void populateCourseTypes() {
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 1, 'Elective' );");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 2, 'Regents' );");
         System.out.println("INSERT INTO CourseType ( course_type_id, course_type_name ) VALUES ( 3, 'AP' );");
-    } // DONE
+    } // DONE FLAWLESS
     public static void populateTeachers(ArrayList<String> fileData) {
         String[] teacherNames = fileData.get(0).split(",");
         String[] departmentNames = fileData.get(1).split(",");
@@ -75,7 +76,7 @@ public class Main {
             teachers[i] = new Teacher(id, teacherFirstName, teacherLastName, deptId);
             System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + id + ", '" + teacherFirstName + " " + teacherLastName + "', " + deptId + ");");
         }
-    } // DONE
+    } // DONE FLAWLESS
     private static int getDepartmentId(String name) {
         for (int i = 0; i < departments.length; i++) {
             if (departments[i].equalsIgnoreCase(name)) {
@@ -83,37 +84,31 @@ public class Main {
             }
         }
         return 11; // Not found
-    }
+    } // DONE FLAWLESS
     public static void populateCourses() {
-        ArrayList<String> parsedSubjects = getFileData("Courses.txt");
+        ArrayList<String> parsedCourses = getFileData("Courses.txt");
 
-        ArrayList<String[]> parsedSubjects2DArray = new ArrayList<>();
-        for (String parsedSubject : parsedSubjects) {
-            String[] subjectLine = parsedSubject.split("\\|");
-            parsedSubjects2DArray.add(subjectLine);
+
+        ArrayList<String> parsedCoursesArray = new ArrayList<>();
+
+        for (String parsedCourse : parsedCourses) {
+            String[] CourseLine = parsedCourse.split("\\|");
+            parsedCoursesArray.addAll(Arrays.asList(CourseLine).subList(1, CourseLine.length));
         }
 
-        int courseId = 1;
-
-        for (String[] subjectArray : parsedSubjects2DArray) {
-            // subjectArray[0] is the dept
-            for (int i = 1; i < subjectArray.length; i++) {
-                String courseName = subjectArray[i];
-
-                int courseTypeId = 1; // Default to Elective
-                if (courseName.contains("Regents")) {
-                    courseTypeId = 2; // Regents
-                } else if (courseName.startsWith("AP")) {
-                    courseTypeId = 3; // AP
-                }
-
-                System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( "
-                        + courseId + ", '" + courseName + "', " + courseTypeId + " );");
-
-                courseId++;
+        for (int i = 0; i < parsedCoursesArray.size(); i++) {
+            String subject = parsedCoursesArray.get(i);
+            int courseTypeId = 1; // Default to Elective
+            if (subject.contains("Regents")) {
+                courseTypeId = 2; // Regents
+            } else if (subject.startsWith("AP")) {
+                courseTypeId = 3; // AP
             }
+
+            System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( "
+                    + (i + 1) + ", '" + subject + "', " + courseTypeId + " );");
         }
-    } // DONE
+    } // DONE FLAWLESS
 
     public static void populateCourseOfferings() {
         String[] room_wings = {"N", "E", "S", "W"};
@@ -219,7 +214,7 @@ public class Main {
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' );");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
-    } // DONE
+    } // DONE, FLAWLESS
     public static void populateAssignments() {
         int assignment_id = 1;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
