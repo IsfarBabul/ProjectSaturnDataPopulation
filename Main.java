@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Main {
     private static final Teacher[] teachers = new Teacher[580];
     private static final Student[] students = new Student[5000];
+    private static final Course[] courses = new Course[120];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
     private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
     private static int courseOfferingIDCount = 0;
@@ -97,33 +98,22 @@ public class Main {
         }
 
         for (int i = 0; i < parsedCoursesArray.size(); i++) {
-            String subject = parsedCoursesArray.get(i);
+            String course = parsedCoursesArray.get(i);
             int courseTypeId = 1; // Default to Elective
-            if (subject.contains("Regents")) {
+            if (course.contains("Regents")) {
                 courseTypeId = 2; // Regents
-            } else if (subject.startsWith("AP")) {
+            } else if (course.startsWith("AP")) {
                 courseTypeId = 3; // AP
             }
 
+            courses[i] = new Course(i + 1, course, courseTypeId);
             System.out.println("INSERT INTO Courses ( course_id, course_name, course_type_id ) VALUES ( "
-                    + (i + 1) + ", '" + subject + "', " + courseTypeId + " );");
+                    + (i + 1) + ", '" + course + "', " + courseTypeId + " );");
         }
     } // DONE FLAWLESS
 
     public static void populateCourseOfferings() {
-        String[] room_wings = {"N", "E", "S", "W"};
-        String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
-        ArrayList<String> allRoomNumbers = new ArrayList<>();
-
-
-        for (String floor_number : floor_numbers) {
-            for (String room_wing : room_wings) {
-                for (int i = 1; i < 21; i++) {
-                    String zeroPad = (i < 10) ? "0" : "";
-                    allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
-                }
-            }
-        }
+        ArrayList<String> allRoomNumbers = getAllRoomNumbers();
 
         int room_index = 0;
         int course_offering_id = 1;
@@ -190,11 +180,29 @@ public class Main {
             }
         }
     }
+
+    private static ArrayList<String> getAllRoomNumbers() {
+        String[] room_wings = {"N", "E", "S", "W"};
+        String[] floor_numbers = {"B", "1", "2", "3", "4", "5", "6", "7", "8"};
+        ArrayList<String> allRoomNumbers = new ArrayList<>();
+
+
+        for (String floor_number : floor_numbers) {
+            for (String room_wing : room_wings) {
+                for (int i = 1; i < 21; i++) {
+                    String zeroPad = (i < 10) ? "0" : "";
+                    allRoomNumbers.add(floor_number + room_wing + zeroPad + i);
+                }
+            }
+        }
+        return allRoomNumbers;
+    } // DONE
+
     public static void populateStudents() {
         for (int i = 0; i < 5000; i++) {
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
-    } // DONE
+    } // DONE FLAWLESS
     public static void populateStudentSchedules() {
         for (int student_id = 0; student_id <= students.length; student_id++) {
             ArrayList<Integer> course_offering_ids = new ArrayList<>();
@@ -214,7 +222,7 @@ public class Main {
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' );");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
-    } // DONE, FLAWLESS
+    } // DONE FLAWLESS
     public static void populateAssignments() {
         int assignment_id = 1;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
@@ -240,14 +248,15 @@ public class Main {
         }
     } // DONE
     public static void populateAssignmentGrades() {
-        for (int student_id = 0; student_id < 5000; student_id++) {  //5000 students
-            ArrayList<Integer> student_course_offering_ids = allCourseOfferingsPerStudent.get(student_id);
-            for (int course_offering_period = 0; course_offering_period < student_course_offering_ids.size(); course_offering_period++) {   //10 course offerings per student
-                int course_offering_id = student_course_offering_ids.get(course_offering_period);
-                for (int assignment_id = 0; assignment_id < allAssignmentsPerCourseOffering.get(course_offering_id).size(); assignment_id++) {    //15 assignments per course offering
+        for (int student_id = 0; student_id < students.length; student_id++) {  //5000 students
+            ArrayList<Integer> student_course_offerings = allCourseOfferingsPerStudent.get(student_id);
+            for (int course_offering_period = 0; course_offering_period < student_course_offerings.size() - 2; course_offering_period++) {   //10 course offerings per student
+                int course_offering_id = student_course_offerings.get(course_offering_period);
+                ArrayList<Integer> assignmentsInCourseOffering = allAssignmentsPerCourseOffering.get(course_offering_id);
+                for (int assignment_id_index = 0; assignment_id_index < assignmentsInCourseOffering.size(); assignment_id_index++) {    //15 assignments per course offering
                     int grade = (int) ((Math.random() * 26) + 75);
                     System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
-                            + student_id + ", '" + grade + "', " + allAssignmentsPerCourseOffering.get(course_offering_id).get(assignment_id) + " );");
+                            + (student_id + 1) + ", '" + grade + "', " + assignmentsInCourseOffering.get(assignment_id_index) + " );");
                 }
             }
         }
