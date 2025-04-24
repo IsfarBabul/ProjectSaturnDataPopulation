@@ -11,9 +11,6 @@ public class Main {
     private static final Course[] courses = new Course[120];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
     private static final ArrayList<CourseOffering> courseOfferings = new ArrayList<>();
-    private static int courseOfferingIDCount = 0;
-    private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
-    private static ArrayList<ArrayList<Integer>> allAssignmentsPerCourseOffering = new ArrayList<>();
 
     public static void main(String[] args) {
         // Step 1: Setup database-independent constants
@@ -132,7 +129,6 @@ public class Main {
 
                 room_index++;
                 course_offering_index++;
-                courseOfferingIDCount++;
             }
         }
     }
@@ -166,7 +162,7 @@ public class Main {
             for (int period = 1; period <= 10; period++) {
                 int random_offering_index = (int) (Math.random() * courseOfferings.size());
                 CourseOffering offering =  courseOfferings.get(random_offering_index);
-                while (offering.period != period || offering.roster.size() > 400) {
+                while (offering.period != period || offering.roster.size() > 200) {
                     random_offering_index = (int) (Math.random() * courseOfferings.size());
                     offering =  courseOfferings.get(random_offering_index);
                 }
@@ -175,9 +171,7 @@ public class Main {
                 System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
                         (student_index + 1) + ", " + (random_offering_index + 1) + ");");
                 course_offering_ids.add(random_offering_index + 1);
-
             }
-            allCourseOfferingsPerStudent.add(course_offering_ids);
         }
     } // DONE
     public static void populateAssignmentTypes() {
@@ -207,7 +201,6 @@ public class Main {
                 assignment_ids.add(assignment_id);
                 assignment_id++;
             }
-            allAssignmentsPerCourseOffering.add(assignment_ids);
         }
     } // DONE
     public static void populateAssignmentGrades() {
@@ -226,7 +219,6 @@ public class Main {
 //            }
 //            System.out.println("student id:" + student_id);
 //        }
-
         for (int i = 0; i < courseOfferings.size(); i++) {
             CourseOffering offering = courseOfferings.get(i);
             for (int j = 0; j < offering.assignments.size(); j++) {
