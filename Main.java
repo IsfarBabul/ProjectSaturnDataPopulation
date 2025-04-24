@@ -10,17 +10,12 @@ public class Main {
     private static final Student[] students = new Student[5000];
     private static final Course[] courses = new Course[120];
     private static final String[] departments = {"Biology", "Chemistry", "CTE", "English", "Health & PE", "World Languages & ENL", "Mathematics", "Physics", "Social Studies", "Visual & Performing Arts", "Teachers"};
-    private static final ArrayList<Integer>[] courseOfferingsByPeriod = new ArrayList[10];
+    private static final ArrayList<CourseOffering> courseOfferings = new ArrayList<>();
     private static int courseOfferingIDCount = 0;
     private static ArrayList<ArrayList<Integer>> allCourseOfferingsPerStudent = new ArrayList<>();
     private static ArrayList<ArrayList<Integer>> allAssignmentsPerCourseOffering = new ArrayList<>();
 
     public static void main(String[] args) {
-        // Step 0: Setup teacher array and courseOfferingsByPeriod
-        for (int i = 0; i < 10; i++) {
-            courseOfferingsByPeriod[i] = new ArrayList<>();
-        }
-
         // Step 1: Setup database-independent constants
         populateDepartments();
         populateCourseTypes();
@@ -116,66 +111,27 @@ public class Main {
         ArrayList<String> allRoomNumbers = getAllRoomNumbers();
 
         int room_index = 0;
-        int course_offering_id = 1;
+        int course_offering_index = 0;
 
-        class blacklistedTeacherPeriodCombo {
-            public int teacher_id;
-            public int period;
-
-
-            public blacklistedTeacherPeriodCombo(int teacherId, int period) {
-                this.teacher_id = teacherId;
-                this.period = period;
-            }
-        }
-
-        ArrayList<blacklistedTeacherPeriodCombo> blacklistArray = new ArrayList<>();
-
-        for (int i = 1; i <= 120; i++) { // # of courses
-            int num_of_course_offerings = (int) (Math.random() * 5) + 1;
+        for (int i = 0; i < courses.length; i++) { // # of courses
+            int num_of_course_offerings = (int) (Math.random() * 3) + 3;
             for (int j = 0; j < num_of_course_offerings; j++) {
+                int teacher_index = (int) (Math.random() * teachers.length);
+                int period_index = (int) (Math.random() * 10);
 
-                int teacher_id;
-                int period;
-                boolean isBlacklisted;
-                int attempts = 0;
+                while (teachers[teacher_index].periods[period_index]) { // trigger if teacher is already teaching period
+                    teacher_index = (int) (Math.random() * teachers.length);
+                    period_index = (int) (Math.random() * 10);
+                }
 
-                // try to find a non-blacklisted teacher/period combo
-                do {
-                    teacher_id = (int) (Math.random() * teachers.length) + 1;
-                    period = (int) (Math.random() * 10) + 1;
+                teachers[teacher_index].periods[period_index] = true;
 
-                    isBlacklisted = false;
-                    for (blacklistedTeacherPeriodCombo combo : blacklistArray) {
-                        if (teacher_id == combo.teacher_id && period == combo.period) {
-                            isBlacklisted = true;
-                            break;
-                        }
-                    }
-
-                    attempts++;
-                    if (attempts > 1000) {
-                        // too many tries, skip this offering
-                        //System.out.println("-- Skipping offering " + course_offering_id + " due to blacklist");
-                        break;
-                    }
-
-                } while (isBlacklisted);
-
-
-               /*if (attempts > 1000) {
-                   continue; // skip if no valid combo found
-               }*/
-
-
-                blacklistArray.add(new blacklistedTeacherPeriodCombo(teacher_id, period));
-                courseOfferingsByPeriod[period - 1].add(course_offering_id); // used for student schedule
-
+                courseOfferings.add(new CourseOffering(course_offering_index + 1, period_index + 1, teachers[teacher_index]));
                 System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " +
-                        course_offering_id + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + teacher_id + ", " + period + " );");
+                        (course_offering_index + 1) + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + (teacher_index + 1) + ", " + (period_index + 1) + " );");
 
                 room_index++;
-                course_offering_id++;
+                course_offering_index++;
                 courseOfferingIDCount++;
             }
         }
@@ -204,21 +160,25 @@ public class Main {
         }
     } // DONE FLAWLESS
     public static void populateStudentSchedules() {
-        for (int student_id = 0; student_id <= students.length; student_id++) {
+        for (int student_index = 0; student_index < students.length; student_index++) {
             ArrayList<Integer> course_offering_ids = new ArrayList<>();
-            for (int period = 0; period < 10; period++) {
-                ArrayList<Integer> offerings = courseOfferingsByPeriod[period];
-                if (!offerings.isEmpty()) {
-                    int randomIndex = (int)(Math.random() * offerings.size());
-                    int course_offering_id = offerings.get(randomIndex);
-                    System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
-                            student_id + ", " + course_offering_id + ");");
-                    course_offering_ids.add(course_offering_id);
+            for (int period = 1; period <= 10; period++) {
+                int random_offering_index = (int) (Math.random() * courseOfferings.size());
+                CourseOffering offering =  courseOfferings.get(random_offering_index);
+                while (offering.period != period || offering.roster.size() > 400) {
+                    random_offering_index = (int) (Math.random() * courseOfferings.size());
+                    offering =  courseOfferings.get(random_offering_index);
                 }
+
+                courseOfferings.get(random_offering_index).roster.add(students[student_index]);
+                System.out.println("INSERT INTO StudentSchedule (student_id, course_offering_id) VALUES (" +
+                        (student_index + 1) + ", " + (random_offering_index + 1) + ");");
+                course_offering_ids.add(random_offering_index + 1);
+
             }
             allCourseOfferingsPerStudent.add(course_offering_ids);
         }
-    }
+    } // DONE
     public static void populateAssignmentTypes() {
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 1, 'minor' );");
         System.out.println("INSERT INTO AssignmentType ( assignment_type_id, assignment_type_name ) VALUES ( 2, 'major' );");
@@ -248,18 +208,23 @@ public class Main {
         }
     } // DONE
     public static void populateAssignmentGrades() {
-        for (int student_id = 0; student_id < students.length; student_id++) {  //5000 students
-            ArrayList<Integer> student_course_offerings = allCourseOfferingsPerStudent.get(student_id);
-            for (int course_offering_period = 0; course_offering_period < student_course_offerings.size() - 2; course_offering_period++) {   //10 course offerings per student
-                int course_offering_id = student_course_offerings.get(course_offering_period);
-                ArrayList<Integer> assignmentsInCourseOffering = allAssignmentsPerCourseOffering.get(course_offering_id);
-                for (int assignment_id_index = 0; assignment_id_index < assignmentsInCourseOffering.size(); assignment_id_index++) {    //15 assignments per course offering
-                    int grade = (int) ((Math.random() * 26) + 75);
-                    System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
-                            + (student_id + 1) + ", '" + grade + "', " + assignmentsInCourseOffering.get(assignment_id_index) + " );");
-                }
-            }
-        }
+//            for (int student_id = 0; student_id < students.length; student_id++) {  //5000 students
+//                ArrayList<Integer> student_course_offerings = allCourseOfferingsPerStudent.get(student_id);
+//                for (int course_offering_period = 0; course_offering_period < student_course_offerings.size() - 2; course_offering_period++) {   //10 course offerings per student
+//                    int course_offering_id = student_course_offerings.get(course_offering_period);
+//                    ArrayList<Integer> assignmentsInCourseOffering = allAssignmentsPerCourseOffering.get(course_offering_id);
+//                    for (int assignment_id_index = 0; assignment_id_index < assignmentsInCourseOffering.size(); assignment_id_index++) {    //15 assignments per course offering
+//
+//                        System.out.println("assignment id index: " + assignment_id_index);
+//                    }
+//                    System.out.println("course offering id:" + course_offering_id);
+//                }
+//                System.out.println("student id:" + student_id);
+//            }
+
+        int grade = (int) ((Math.random() * 26) + 75);
+        System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
+                + (1) + ", '" + grade + "', " + 1 + " );");
     }
 
 
