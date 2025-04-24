@@ -4,11 +4,13 @@ public class CourseOffering extends Referencable {
     public int period;
     public Teacher teacher;
     public ArrayList<Student> roster;
+    public ArrayList<Assignment> assignments;
 
     public CourseOffering(int id, int period, Teacher teacher) {
         super(id);
         this.period = period;
         this.teacher = teacher;
         roster = new ArrayList<>();
+        assignments = new ArrayList<>();
     }
 }

@@ -156,6 +156,7 @@ public class Main {
 
     public static void populateStudents() {
         for (int i = 0; i < 5000; i++) {
+            students[i] = new Student(i + 1);
             System.out.println("INSERT INTO Students ( student_id, name ) VALUES ( " + (i + 1) + ", 'Student" + (i + 1) + "' );");
         }
     } // DONE FLAWLESS
@@ -186,21 +187,23 @@ public class Main {
     public static void populateAssignments() {
         int assignment_id = 1;
         // 12 minor + 3 major per offering (600 offerings × 15 = 9000 assignments)
-        for (int offering_id = 1; offering_id <= courseOfferingIDCount; offering_id++) {    //call this after course offering id is called
+        for (int i = 0; i < courseOfferings.size(); i++) {    //call this after course offering id is called
             ArrayList<Integer> assignment_ids = new ArrayList<>();
             for (int j = 1; j <= 12; j++) {
                 System.out.println(
                         "INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES (" +
-                                assignment_id + ", 'Minor" + (j) + "', 1, " + offering_id + ");"
+                                assignment_id + ", 'Minor" + (j) + "', 1, " + courseOfferings.get(i).id + ");"
                 );
+                courseOfferings.get(i).assignments.add(new Assignment(assignment_id));
                 assignment_ids.add(assignment_id);
                 assignment_id++;
             }
             for (int j = 1; j <= 3; j++) {
                 System.out.println(
                         "INSERT INTO Assignments ( assignment_id, assignment_name, assignment_type_id, course_offering_id ) VALUES (" +
-                                assignment_id + ", 'Major" + (j) + "', 2, " + offering_id + ");"
+                                assignment_id + ", 'Major" + (j) + "', 2, " + courseOfferings.get(i).id + ");"
                 );
+                courseOfferings.get(i).assignments.add(new Assignment(assignment_id));
                 assignment_ids.add(assignment_id);
                 assignment_id++;
             }
@@ -208,23 +211,32 @@ public class Main {
         }
     } // DONE
     public static void populateAssignmentGrades() {
-//            for (int student_id = 0; student_id < students.length; student_id++) {  //5000 students
-//                ArrayList<Integer> student_course_offerings = allCourseOfferingsPerStudent.get(student_id);
-//                for (int course_offering_period = 0; course_offering_period < student_course_offerings.size() - 2; course_offering_period++) {   //10 course offerings per student
-//                    int course_offering_id = student_course_offerings.get(course_offering_period);
-//                    ArrayList<Integer> assignmentsInCourseOffering = allAssignmentsPerCourseOffering.get(course_offering_id);
-//                    for (int assignment_id_index = 0; assignment_id_index < assignmentsInCourseOffering.size(); assignment_id_index++) {    //15 assignments per course offering
-//
-//                        System.out.println("assignment id index: " + assignment_id_index);
-//                    }
-//                    System.out.println("course offering id:" + course_offering_id);
+//        for (int student_id = 0; student_id < students.length; student_id++) {  //5000 students
+//            ArrayList<Integer> student_course_offerings = allCourseOfferingsPerStudent.get(student_id);
+//            for (int course_offering_period = 0; course_offering_period < student_course_offerings.size() - 2; course_offering_period++) {   //10 course offerings per student
+//                int course_offering_id = student_course_offerings.get(course_offering_period);
+//                ArrayList<Integer> assignmentsInCourseOffering = allAssignmentsPerCourseOffering.get(course_offering_id);
+//                for (int assignment_id_index = 0; assignment_id_index < assignmentsInCourseOffering.size(); assignment_id_index++) {    //15 assignments per course offering
+//                    int grade = (int) ((Math.random() * 26) + 75);
+//                    System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
+//                            + (1) + ", '" + grade + "', " + 1 + " );");
+//                    System.out.println("assignment id index: " + assignment_id_index);
 //                }
-//                System.out.println("student id:" + student_id);
+//                System.out.println("course offering id:" + course_offering_id);
 //            }
+//            System.out.println("student id:" + student_id);
+//        }
 
-        int grade = (int) ((Math.random() * 26) + 75);
-        System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
-                + (1) + ", '" + grade + "', " + 1 + " );");
+        for (int i = 0; i < courseOfferings.size(); i++) {
+            CourseOffering offering = courseOfferings.get(i);
+            for (int j = 0; j < offering.assignments.size(); j++) {
+                for (int k = 0; k < offering.roster.size(); k++) {
+                    int grade = (int) ((Math.random() * 26) + 75);
+                    System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
+                            + offering.roster.get(k).id + ", '" + grade + "', " + offering.assignments.get(j).id + " );");
+                }
+            }
+        }
     }
 
 
