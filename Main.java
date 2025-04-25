@@ -45,7 +45,7 @@ public class Main {
 
     public static void populateDepartments() {
         for (int i = 0; i < departments.length; i++) {
-            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", " + departments[i] + " );");
+            System.out.println("INSERT INTO Departments ( department_id, department_name ) VALUES ( " + (i + 1) + ", '" + departments[i] + "' );");
         }
     } // DONE FLAWLESS
     public static void populateCourseTypes() {
@@ -60,14 +60,13 @@ public class Main {
         for (int i = 0; i < teacherNames.length; i++) {
             String[] teacherNameSplit = teacherNames[i].trim().split(" ");
 
-            int id = i + 1;
             String teacherFirstName = teacherNameSplit[0];
             String teacherLastName = teacherNameSplit[teacherNameSplit.length - 1];
             String deptName = (i < departmentNames.length) ? departmentNames[i].trim() : "";
             int deptId = getDepartmentId(deptName);
 
-            teachers[i] = new Teacher(id, teacherFirstName, teacherLastName, deptId);
-            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + id + ", '" + teacherFirstName + " " + teacherLastName + "', " + deptId + ");");
+            teachers[i] = new Teacher(i + 1, teacherFirstName, teacherLastName, deptId);
+            System.out.println("INSERT INTO Teachers (teacher_id, name, department_id) VALUES (" + (i + 1) + ", '" + teacherFirstName + " " + teacherLastName + "', " + deptId + ");");
         }
     } // DONE FLAWLESS
     private static int getDepartmentId(String name) {
@@ -124,8 +123,8 @@ public class Main {
                 teachers[teacher_index].periods[period_index] = true;
 
                 courseOfferings.add(new CourseOffering(course_offering_index + 1, period_index + 1, teachers[teacher_index]));
-                System.out.println("INSERT INTO CourseOfferings ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " +
-                        (course_offering_index + 1) + ", " + allRoomNumbers.get(room_index) + ", " + i + ", " + (teacher_index + 1) + ", " + (period_index + 1) + " );");
+                System.out.println("INSERT INTO CourseOffering ( course_offering_id, course_offering_room, course_id, teacher_id, period ) VALUES ( " +
+                        (course_offering_index + 1) + ", '" + allRoomNumbers.get(room_index) + "', " + (i + 1) + ", " + (teacher_index + 1) + ", " + (period_index + 1) + " );");
 
                 room_index++;
                 course_offering_index++;
@@ -225,7 +224,7 @@ public class Main {
                 for (int k = 0; k < offering.roster.size(); k++) {
                     int grade = (int) ((Math.random() * 26) + 75);
                     System.out.println("INSERT INTO AssignmentGrade ( student_id, grade, assignment_id ) VALUES ( "
-                            + offering.roster.get(k).id + ", '" + grade + "', " + offering.assignments.get(j).id + " );");
+                            + offering.roster.get(k).id + ", " + grade + ", " + offering.assignments.get(j).id + " );");
                 }
             }
         }
